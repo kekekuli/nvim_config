@@ -38,7 +38,14 @@ return {
     config = function()
       require("pantran").setup {
         default_engine = "google", -- 默认翻译引擎，支持 google_translate、youdao、bing 等
-        default_target = "zh", -- 目标语言，这里是中文
+        engines = {
+          google = {
+            default_target = "zh-CN",
+            fallback = {
+              default_target = "zh-CN",
+            },
+          },
+        },
       }
     end,
     cmd = { "Pantran" },
