@@ -50,6 +50,16 @@ return {
     end,
     cmd = { "Pantran" },
   },
+  {
+    "akinsho/toggleterm.nvim",
+    version = "*",
+    cmd = { "ToggleTerm", "ToggleTermToggleAll", "ToggleTermSendCurrentLine", "ToggleTermSendVisualLines" },
+    config = function()
+      require("toggleterm").setup {
+        open_mapping = [[<c-\>]],
+      }
+    end,
+  },
   -- test new blink
   -- { import = "nvchad.blink.lazyspec" },
 

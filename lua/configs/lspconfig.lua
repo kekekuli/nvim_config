@@ -1,5 +1,12 @@
 require("nvchad.configs.lspconfig").defaults()
 
+local hover = vim.lsp.buf.hover
+vim.lsp.buf.hover = function()
+  return hover {
+    border = "rounded",
+  }
+end
+
 local servers = {
   "html",
   "cssls",
@@ -7,7 +14,7 @@ local servers = {
   "eslint",
   "tailwindcss",
   "lua_ls",
-  "ts_ls"
+  "ts_ls",
 }
 
 vim.lsp.enable(servers)
