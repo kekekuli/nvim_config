@@ -60,6 +60,36 @@ return {
       }
     end,
   },
+  {
+    "hrsh7th/nvim-cmp",
+    event = "InsertEnter",
+    opts = function(_, opts)
+      table.insert(opts.sources, 1, { name = "codeium" })
+    end,
+  },
+  {
+    "Exafunction/windsurf.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "hrsh7th/nvim-cmp",
+    },
+    config = function()
+      require("codeium").setup {
+        enable_cmp_source = false,
+        virtual_text = {
+          enabled = true,
+
+          key_bindings = {
+            accept = "<C-l>",
+            -- Accept the current completion.
+            clear = "<C-x>",
+          },
+        },
+      }
+    end,
+    event = "InsertEnter",
+  },
+
   -- test new blink
   -- { import = "nvchad.blink.lazyspec" },
 
