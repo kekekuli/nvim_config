@@ -127,7 +127,11 @@ return {
   {
     "nvimdev/lspsaga.nvim",
     config = function()
-      require("lspsaga").setup {}
+      require("lspsaga").setup {
+        lightbulb = {
+          debounce = 1000,
+        },
+      }
     end,
     event = "LspAttach",
     dependencies = {
