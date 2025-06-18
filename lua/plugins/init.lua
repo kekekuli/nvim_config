@@ -15,22 +15,22 @@ return {
   {
     "tpope/vim-fugitive",
     cmd = {
-      "Git",        -- 打开 Fugitive 主界面，最常用
-      "G",          -- :Git 的简写，方便
-      "Gstatus",    -- 查看当前 git 状态
+      "Git", -- 打开 Fugitive 主界面，最常用
+      "G", -- :Git 的简写，方便
+      "Gstatus", -- 查看当前 git 状态
       "Gdiffsplit", -- 分割窗口显示文件差异
-      "Gread",      -- 从 git 仓库恢复文件（放弃本地修改）
-      "Gwrite",     -- 保存修改到 git
-      "Gblame",     -- 查看文件某行的 git blame 信息
-      "Glog",       -- 查看提交历史
-      "Gpush",      -- git push
-      "Gpull",      -- git pull
-      "Gcommit",    -- git commit
-      "Gbranch",    -- 分支管理
-      "Gcheckout",  -- 切换分支或提交
-      "Gmerge",     -- 合并分支
-      "Gstash",     -- stash 相关操作
-      "Greset",     -- reset 代码
+      "Gread", -- 从 git 仓库恢复文件（放弃本地修改）
+      "Gwrite", -- 保存修改到 git
+      "Gblame", -- 查看文件某行的 git blame 信息
+      "Glog", -- 查看提交历史
+      "Gpush", -- git push
+      "Gpull", -- git pull
+      "Gcommit", -- git commit
+      "Gbranch", -- 分支管理
+      "Gcheckout", -- 切换分支或提交
+      "Gmerge", -- 合并分支
+      "Gstash", -- stash 相关操作
+      "Greset", -- reset 代码
     },
   },
   {
@@ -100,30 +100,40 @@ return {
   },
 
   {
-    'kevinhwang91/nvim-ufo',
-    dependencies = { 'kevinhwang91/promise-async' },
+    "kevinhwang91/nvim-ufo",
+    dependencies = { "kevinhwang91/promise-async" },
     config = function()
-      vim.o.foldcolumn = '1' -- '0' is not bad
-      vim.o.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
+      vim.o.foldcolumn = "1" -- '0' is not bad
+      vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
       vim.o.foldlevelstart = 99
       vim.o.foldenable = true
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities.textDocument.foldingRange = {
         dynamicRegistration = false,
-        lineFoldingOnly = true
+        lineFoldingOnly = true,
       }
       local language_servers = vim.lsp.get_clients() -- or list servers manually like {'gopls', 'clangd'}
       for _, ls in ipairs(language_servers) do
-        require('lspconfig')[ls].setup({
-          capabilities = capabilities
+        require("lspconfig")[ls].setup {
+          capabilities = capabilities,
           -- you can add other fields for setting up lsp server in this table
-        })
+        }
       end
-      require('ufo').setup()
+      require("ufo").setup()
     end,
-    event = "BufReadPost"
-  }
+    event = "BufReadPost",
+  },
+  {
+    "nvimdev/lspsaga.nvim",
+    config = function()
+      require("lspsaga").setup {}
+    end,
+    event = "LspAttach",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+    },
+  },
   -- test new blink
   -- { import = "nvchad.blink.lazyspec" },
 
@@ -136,4 +146,5 @@ return {
   -- 		},
   -- 	},
   -- },
+  --
 }
