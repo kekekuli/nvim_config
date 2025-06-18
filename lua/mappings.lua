@@ -68,3 +68,7 @@ local lazygit = Terminal:new {
 map("n", "<leader>gg", function()
   lazygit:toggle()
 end, vim.tbl_extend("force", ToggleOpts, { desc = "Toggle lazygit terminal" }))
+
+-- ufo fold
+map("n", "zR", require("ufo").openAllFolds)
+map("n", "zM", require("ufo").closeAllFolds)
