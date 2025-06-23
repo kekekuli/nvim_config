@@ -15,6 +15,7 @@ local servers = {
   "tailwindcss",
   "lua_ls",
   "ts_ls",
+  "css_variables",
 }
 
 vim.lsp.enable(servers)
