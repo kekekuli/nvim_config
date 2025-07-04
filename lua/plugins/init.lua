@@ -141,21 +141,21 @@ return {
   {
     "mfussenegger/nvim-dap",
     event = "BufReadPre",
-  },
-  {
-    "rcarriga/nvim-dap-ui",
-    dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
-    event = "BufReadPre",
-  },
-  {
-    "nvim-neotest/nvim-nio",
-    event = "BufReadPre",
-  },
-  {
-    "jay-babu/mason-nvim-dap.nvim",
-    event = "BufReadPre",
-  },
-  -- test new blink
+    dependencies = {
+      "nvim-neotest/nvim-nio",
+      "rcarriga/nvim-dap-ui",
+      "jay-babu/mason-nvim-dap.nvim",
+    },
+    config = function()
+      require("dapui").setup()
+      require("mason-nvim-dap").setup({
+        ensure_installed = { "js" },
+        automatic_installation = true,
+        handlers = {}
+      })
+    end,
+
+  } -- test new blink
   -- { import = "nvchad.blink.lazyspec" },
 
   -- {
