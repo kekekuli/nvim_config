@@ -33,7 +33,6 @@ end
 dap.listeners.before.event_terminated["dapui_config"] = dapui.close
 dap.listeners.before.event_exited["dapui_config"] = dapui.close
 
-
 local jsDebuggerPath = vim.fn.expand("$MASON") .. "/packages/js-debug-adapter/js-debug"
 
 dap.adapters["pwa-node"] = {
@@ -46,8 +45,9 @@ dap.adapters["pwa-node"] = {
     args = { jsDebuggerPath .. "/src/dapDebugServer.js", "${port}" },
   }
 }
+dap.adapters["pwa-chrome"] = dap.adapters["pwa-node"]
 
-for _, language in ipairs({ "typescript", "javascript", "svelte" }) do
+for _, language in ipairs({ "typescript", "javascript", "svelte", "typescriptreact" }) do
   dap.configurations[language] = {
     {
       -- use nvim-dap-vscode-js's pwa-node debug adapter
@@ -64,10 +64,10 @@ for _, language in ipairs({ "typescript", "javascript", "svelte" }) do
       -- attach to an already running node process with --inspect flag
       -- default port: 9222
       request = "attach",
+      name = "Attach to node process",
       -- allows us to pick the process using a picker
       processId = require 'dap.utils'.pick_process,
-      -- name of the debug action
-      name = "Attach debugger to existing `node --inspect` process",
+      -- name of the debug action name = "Attach debugger to existing `node --inspect` process",
       -- for compiled languages like TypeScript or Svelte.js
       sourceMaps = true,
       -- resolve source maps in nested locations while ignoring node_modules
@@ -78,21 +78,21 @@ for _, language in ipairs({ "typescript", "javascript", "svelte" }) do
       -- we don't want to debug code inside node_modules, so skip it!
       skipFiles = { "${workspaceFolder}/node_modules/**/*.js" },
     },
-    --   {
-    --     -- use nvim-dap-vscode-js's pwa-chrome debug adapter
-    --     type = "pwa-chrome",
-    --     request = "launch",
-    --     -- name of the debug action
-    --     name = "Launch Chrome to debug client side code",
-    --     -- default vite dev server url
-    --     url = "http://localhost:5173",
-    --     -- for TypeScript/Svelte
-    --     sourceMaps = true,
-    --     webRoot = "${workspaceFolder}/src",
-    --     protocol = "inspector",
-    --     port = 9222,
-    --     -- skip files from vite's hmr
-    --     skipFiles = { "**/node_modules/**/*", "**/@vite/*", "**/src/client/*", "**/src/*" },
-    --   },
+    {
+      -- use nvim-dap-vscode-js's pwa-chrome debug adapter
+      type = "pwa-chrome",
+      request = "launch",
+      -- name of the debug action
+      name = "Use chrome to attach web app",
+      -- default vite dev server url
+      url = "http://localhost:5173",
+      -- for TypeScript/Svelte
+      sourceMaps = true,
+      webRoot = "${workspaceFolder}/src",
+      protocol = "inspector",
+      port = 9222,
+      -- skip files from vite's hmr
+      skipFiles = { "**/node_modules/**/*", "**/@vite/*", "**/src/client/*", "**/src/*" },
+    },
   }
 end
