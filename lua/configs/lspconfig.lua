@@ -16,6 +16,7 @@ local servers = {
   "lua_ls",
   "ts_ls",
   "css_variables",
+  "gopls"
 }
 
 vim.lsp.enable(servers)
