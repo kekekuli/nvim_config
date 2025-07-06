@@ -9,13 +9,14 @@ map("i", "jk", "<ESC>")
 map("n", "<C-i>", "<C-i>", { desc = "Jump forward" })
 
 -- pantran configs
-local pantran = require "pantran"
 local opts = { silent = true, expr = true, noremap = true }
 
 map(
   "n",
   "<leader>ts",
-  pantran.motion_translate,
+  function()
+    require("pantran").motion_translate()
+  end,
   vim.tbl_extend("force", opts, {
     desc = "Translate and move cursor",
   })
@@ -25,7 +26,7 @@ map(
   "n",
   "<leader>tr",
   function()
-    return pantran.motion_translate() .. "_"
+    return require("pantran").motion_translate() .. "_"
   end,
   vim.tbl_extend("force", opts, {
     desc = "Translate at cursor",
@@ -35,7 +36,9 @@ map(
 map(
   "x",
   "<leader>tr",
-  pantran.motion_translate,
+  function()
+    require("pantran").motion_translate()
+  end,
   vim.tbl_extend("force", opts, {
     desc = "Translate selected text",
   })
@@ -43,35 +46,34 @@ map(
 
 --Toggleterm configs
 local ToggleOpts = { silent = true, noremap = true }
-
-local Terminal = require("toggleterm.terminal").Terminal
-
-local term1 = Terminal:new { count = 1, direction = "float" }
-local term2 = Terminal:new { count = 2, direction = "float" }
-local term3 = Terminal:new { count = 3, direction = "float" }
-
+local terminals = {}
 map("n", "<leader>1", function()
-  term1:toggle()
+  local Terminal = require("toggleterm.terminal").Terminal
+  terminals[1] = terminals[1] or Terminal:new { count = 1, direction = "float" }
+  terminals[1]:toggle()
 end, vim.tbl_extend("force", ToggleOpts, { desc = "Toggle float terminal #1" }))
 map("n", "<leader>2", function()
-  term2:toggle()
+  local Terminal = require("toggleterm.terminal").Terminal
+  terminals[2] = terminals[2] or Terminal:new { count = 2, direction = "float" }
+  terminals[2]:toggle()
 end, vim.tbl_extend("force", ToggleOpts, { desc = "Toggle float terminal #2" }))
 map("n", "<leader>3", function()
-  term3:toggle()
+  local Terminal = require("toggleterm.terminal").Terminal
+  terminals[3] = terminals[3] or Terminal:new { count = 3, direction = "float" }
+  terminals[3]:toggle()
 end, vim.tbl_extend("force", ToggleOpts, { desc = "Toggle float terminal #3" }))
-
-local lazygit = Terminal:new {
-  cmd = "lazygit",
-  direction = "float",
-}
-
 map("n", "<leader>gg", function()
-  lazygit:toggle()
+  local Terminal = require("toggleterm.terminal").Terminal
+  terminals.lazygit = terminals.lazygit or Terminal:new {
+    cmd = "lazygit",
+    direction = "float",
+  }
+  terminals.lazygit:toggle()
 end, vim.tbl_extend("force", ToggleOpts, { desc = "Toggle lazygit terminal" }))
 
 -- ufo fold
-map("n", "zR", require("ufo").openAllFolds)
-map("n", "zM", require("ufo").closeAllFolds)
+map("n", "zR", function() require("ufo").openAllFolds() end)
+map("n", "zM", function() require("ufo").closeAllFolds() end)
 
 -- lspsaga
 map("n", "gh", "<cmd>Lspsaga finder<CR>", { desc = "Lspsaga finder" })
@@ -84,21 +86,25 @@ map("n", "<leader>sb", "<cmd>Lspsaga show_buf_diagnostics<CR>", { desc = "Buffer
 map("n", "[e", "<cmd>Lspsaga diagnostic_jump_prev<CR>", { desc = "Prev Diagnostic" })
 map("n", "]e", "<cmd>Lspsaga diagnostic_jump_next<CR>", { desc = "Next Diagnostic" })
 
-local dap = require("dap");
-local dapui = require("dapui")
-map("n", "<leader>j", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
+map("n", "<leader>j", function() require("dap").toggle_breakpoint() end, { desc = "Toggle breakpoint" })
 map("n", "<leader>J", function()
   local cond = vim.fn.input("Breakpoint condition: ")
-  dap.set_breakpoint(cond)
+  require("dap").set_breakpoint(cond)
 end, { desc = "Set conditional breakpoint" })
-map("n", "<leader>jc", dap.clear_breakpoints, { desc = "Clear all breakpoints" })
-map("n", "<F5>", dap.continue, { desc = "Start/Continue Debugging" })
-map("n", "<leader>cd", function()
-  dap.terminate()
-end, { desc = "Stop debug" })
-map("n", "<F10>", dap.step_over, { desc = "Step Over" })
-map("n", "<F11>", dap.step_into, { desc = "Step Into" })
-map("n", "<F12>", dap.step_out, { desc = "Step Out" })
-map("n", "<leader>dr", dap.repl.toggle, { desc = "Toggle Debug REPL" })
-map("n", "<leader>dl", dap.run_last, { desc = "Run Last Debug Session" })
-map("n", "<leader>jj", dapui.toggle, { desc = "Toggle DAP UI" })
+map("n", "<leader>jc", function() require("dap").clear_breakpoints() end, { desc = "Clear all breakpoints" })
+map("n", "<F5>", function() require("dap").continue() end, { desc = "Start/Continue Debugging" })
+map("n", "<leader>cd", function() require("dap").terminate() end, { desc = "Stop debug" })
+map("n", "<F10>", function() require("dap").step_over() end, { desc = "Step Over" })
+map("n", "<F11>", function()
+  require("dap").step_into()
+end, { desc = "Step Into" })
+map("n", "<F12>", function() require("dap").step_out() end, { desc = "Step Out" })
+map("n", "<leader>dr", function() require("dap").repl.toggle() end, { desc = "Toggle Debug REPL" })
+map("n", "<leader>dl", function() require("dap").run_last() end, { desc = "Run Last Debug Session" })
+map("n", "<leader>jj", function() require("dapui").toggle() end, { desc = "Toggle DAP UI" })
+
+map("n", "<leader>da", function() require("close-buffers").delete({ type = 'all', force = true }) end,
+  { desc = "Delete all buffers" })
+map("n", "<leader>do", function()
+  require("close-buffers").delete({ type = 'other' })
+end, { desc = "Delete other buffers" })

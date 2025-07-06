@@ -91,7 +91,7 @@ return {
   },
   {
     "RRethy/vim-illuminate",
-    event = { "CursorHold", "CursorHoldI" },
+    event = { "BufReadPost" },
     config = function()
       require("illuminate").configure {
         min_count_to_highlight = 2,
@@ -154,21 +154,28 @@ return {
   },
   {
     "mfussenegger/nvim-dap",
-    event = "BufReadPre",
     dependencies = {
       "nvim-neotest/nvim-nio",
-      "rcarriga/nvim-dap-ui",
-      "jay-babu/mason-nvim-dap.nvim",
+      {
+        "rcarriga/nvim-dap-ui",
+        config = function()
+          require("dapui").setup()
+        end,
+      },
+      {
+        "jay-babu/mason-nvim-dap.nvim",
+        config = function()
+          require("mason-nvim-dap").setup({
+            ensure_installed = { "js" },
+            automatic_installation = true,
+            handlers = {}
+          })
+        end,
+      },
     },
     config = function()
-      require("dapui").setup()
-      require("mason-nvim-dap").setup({
-        ensure_installed = { "js" },
-        automatic_installation = true,
-        handlers = {}
-      })
-    end,
-
+      require("configs.dap-config")
+    end
   },
   {
     "nvim-treesitter/nvim-treesitter",
@@ -182,5 +189,10 @@ return {
       }
     },
   },
-
+  {
+    "kazhala/close-buffers.nvim",
+    cmd = {
+      "BDelete", "BWipeout", -- lazy-load on use
+    },
+  }
 }
