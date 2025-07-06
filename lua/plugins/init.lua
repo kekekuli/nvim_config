@@ -146,14 +146,7 @@ return {
       -- 可选：配置主题风格
       require("tokyonight").setup {
         style = "storm",        -- 可选: "storm", "night", "moon", "day"
-        transparent = false,    -- 背景透明（若想让终端背景可见）
         terminal_colors = true, -- 终端颜色适配
-        styles = {
-          comments = { italic = true },
-          keywords = { italic = true },
-          functions = {},
-          variables = {},
-        },
       }
       -- 激活 colorscheme
       vim.cmd.colorscheme "tokyonight"
