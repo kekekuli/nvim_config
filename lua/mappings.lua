@@ -103,8 +103,8 @@ map("n", "<leader>dr", function() require("dap").repl.toggle() end, { desc = "To
 map("n", "<leader>dl", function() require("dap").run_last() end, { desc = "Run Last Debug Session" })
 map("n", "<leader>jj", function() require("dapui").toggle() end, { desc = "Toggle DAP UI" })
 
-map("n", "<leader>da", function() require("close-buffers").delete({ type = 'all', force = true }) end,
+map("n", "<leader>da", function() require("close_buffers").delete({ type = 'all', force = true }) end,
   { desc = "Delete all buffers" })
 map("n", "<leader>do", function()
-  require("close-buffers").delete({ type = 'other' })
+  require("close_buffers").delete({ type = 'other' })
 end, { desc = "Delete other buffers" })
