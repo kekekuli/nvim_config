@@ -9,7 +9,18 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
-      require "configs.lspconfig"
+      require("nvchad.configs.lspconfig").defaults()
+      local hover = vim.lsp.buf.hover
+      vim.lsp.buf.hover = function()
+        return hover {
+          border = "rounded",
+        }
+      end
+      local servers = require("configs.lsp_servers")
+      local lspconfig = require("lspconfig")
+      for _, server in ipairs(servers) do
+        lspconfig[server].setup({})
+      end
     end,
   },
   {
@@ -194,5 +205,17 @@ return {
     cmd = {
       "BDelete", "BWipeout", -- lazy-load on use
     },
+  },
+  {
+    "mason-org/mason-lspconfig.nvim",
+    opts = {
+      ensure_installed = require("configs.lsp_servers"),
+      automatic_installation = true
+    },
+    dependencies = {
+      { "mason-org/mason.nvim", opts = {} },
+      "neovim/nvim-lspconfig",
+    },
+    event = "VeryLazy"
   }
 }
