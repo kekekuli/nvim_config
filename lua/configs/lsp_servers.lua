@@ -7,6 +7,7 @@ local servers = {
   "lua_ls",
   "ts_ls",
   "css_variables",
-  "gopls"
+  "gopls",
+  "vue_ls"
 }
 return servers;
