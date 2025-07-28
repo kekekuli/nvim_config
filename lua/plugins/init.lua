@@ -16,11 +16,6 @@ return {
           border = "rounded",
         }
       end
-      local servers = require("configs.lsp_servers")
-      local lspconfig = require("lspconfig")
-      for _, server in ipairs(servers) do
-        lspconfig[server].setup({})
-      end
     end,
   },
   {
