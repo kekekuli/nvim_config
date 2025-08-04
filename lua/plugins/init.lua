@@ -188,7 +188,7 @@ return {
     opts = {
       ensure_installed = {
         "javascript", "typescript", "html", "css", "tsx",
-        "go", "lua", "c", "cpp", "python"
+        "go", "lua", "c", "cpp", "python", "vue"
       },
       highlight = {
         enable = true
