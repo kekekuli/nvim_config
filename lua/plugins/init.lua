@@ -188,5 +188,16 @@ return {
 
       require("configs.custom_lspconfig");
     end
+  },
+  {
+    'mhinz/vim-startify',
+    event = "VimEnter"
+  },
+  {
+    'chentoast/marks.nvim',
+    event = "VeryLazy", -- 打开文件时加载
+    config = function()
+      require('marks').setup({})
+    end
   }
 }
