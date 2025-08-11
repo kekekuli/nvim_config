@@ -10,12 +10,6 @@ return {
     "neovim/nvim-lspconfig",
     config = function()
       require("nvchad.configs.lspconfig").defaults()
-      local hover = vim.lsp.buf.hover
-      vim.lsp.buf.hover = function()
-        return hover {
-          border = "rounded",
-        }
-      end
     end,
   },
   {
@@ -69,9 +63,6 @@ return {
   {
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
-    opts = function(_, opts)
-      table.insert(opts.sources, 1, { name = "codeium" })
-    end,
   },
   {
     "Exafunction/windsurf.nvim",
@@ -81,7 +72,6 @@ return {
     },
     config = function()
       require("codeium").setup {
-        enable_cmp_source = false,
         virtual_text = {
           enabled = true,
 
@@ -109,23 +99,6 @@ return {
     "kevinhwang91/nvim-ufo",
     dependencies = { "kevinhwang91/promise-async" },
     config = function()
-      vim.o.foldcolumn = "1" -- '0' is not bad
-      vim.o.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
-      vim.o.foldlevelstart = 99
-      vim.o.foldenable = true
-
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities.textDocument.foldingRange = {
-        dynamicRegistration = false,
-        lineFoldingOnly = true,
-      }
-      local language_servers = vim.lsp.get_clients() -- or list servers manually like {'gopls', 'clangd'}
-      for _, ls in ipairs(language_servers) do
-        require("lspconfig")[ls].setup {
-          capabilities = capabilities,
-          -- you can add other fields for setting up lsp server in this table
-        }
-      end
       require("ufo").setup()
     end,
     event = "BufReadPost",
@@ -203,14 +176,17 @@ return {
   },
   {
     "mason-org/mason-lspconfig.nvim",
-    opts = {
-      ensure_installed = require("configs.lsp_servers"),
-      automatic_installation = true
-    },
     dependencies = {
       { "mason-org/mason.nvim", opts = {} },
       "neovim/nvim-lspconfig",
     },
-    event = "VeryLazy"
+    event = "VeryLazy",
+    config = function()
+      require("mason-lspconfig").setup({
+        ensure_installed = require("configs.lsp_servers"),
+      })
+
+      require("configs.custom_lspconfig");
+    end
   }
 }
