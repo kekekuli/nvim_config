@@ -161,12 +161,21 @@ return {
     opts = {
       ensure_installed = {
         "javascript", "typescript", "html", "css", "tsx",
-        "go", "lua", "c", "cpp", "python", "vue"
+        "go", "lua", "c", "cpp", "python", "vue", 'embedded_template',
       },
       highlight = {
         enable = true
-      }
+      },
     },
+    config = function(_, opts)
+      require("nvim-treesitter.configs").setup(opts)
+      vim.treesitter.language.register('embedded_template', 'ejs');
+      vim.filetype.add({
+        extension = {
+          ejs = 'ejs'
+        }
+      })
+    end
   },
   {
     "kazhala/close-buffers.nvim",
