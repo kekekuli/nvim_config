@@ -160,7 +160,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     opts = {
       ensure_installed = {
-        "javascript", "typescript", "html", "css", "tsx",
+        "javascript", "typescript", "html", "css", "tsx", "scss",
         "go", "lua", "c", "cpp", "python", "vue", 'embedded_template',
       },
       highlight = {

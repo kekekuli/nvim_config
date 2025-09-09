@@ -9,6 +9,8 @@ local servers = {
   "css_variables",
   "gopls",
   "vuels",
-  "vue_ls"
+  "vue_ls",
+  "somesass_ls",
+  "cssmodules_ls",
 }
 return servers;
