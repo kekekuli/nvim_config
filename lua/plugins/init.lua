@@ -208,5 +208,12 @@ return {
     config = function()
       require('marks').setup({})
     end
+  },
+  {
+    'nvim-pack/nvim-spectre',
+    cmd = 'Spectre',
+    dependencies = {
+      'nvim-lua/plenary.nvim'
+    }
   }
 }
