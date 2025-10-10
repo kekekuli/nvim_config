@@ -108,3 +108,4 @@ map("n", "<leader>da", function() require("close_buffers").delete({ type = 'all'
 map("n", "<leader>do", function()
   require("close_buffers").delete({ type = 'other' })
 end, { desc = "Delete other buffers" })
+map("n", "<leader>rp", function() require("spectre").open() end, { desc = "Start Spectre (Find/Replace)" })
