@@ -86,6 +86,7 @@ map("n", "<leader>sb", "<cmd>Lspsaga show_buf_diagnostics<CR>", { desc = "Buffer
 map("n", "[e", "<cmd>Lspsaga diagnostic_jump_prev<CR>", { desc = "Prev Diagnostic" })
 map("n", "]e", "<cmd>Lspsaga diagnostic_jump_next<CR>", { desc = "Next Diagnostic" })
 
+-- dap, debug related
 map("n", "<leader>j", function() require("dap").toggle_breakpoint() end, { desc = "Toggle breakpoint" })
 map("n", "<leader>J", function()
   local cond = vim.fn.input("Breakpoint condition: ")
@@ -103,9 +104,12 @@ map("n", "<leader>dr", function() require("dap").repl.toggle() end, { desc = "To
 map("n", "<leader>dl", function() require("dap").run_last() end, { desc = "Run Last Debug Session" })
 map("n", "<leader>jj", function() require("dapui").toggle() end, { desc = "Toggle DAP UI" })
 
+-- control buffers
 map("n", "<leader>da", function() require("close_buffers").delete({ type = 'all', force = true }) end,
   { desc = "Delete all buffers" })
 map("n", "<leader>do", function()
   require("close_buffers").delete({ type = 'other' })
 end, { desc = "Delete other buffers" })
+
+-- find and replace
 map("n", "<leader>rp", function() require("spectre").open() end, { desc = "Start Spectre (Find/Replace)" })
