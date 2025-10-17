@@ -11,11 +11,12 @@ vim.lsp.buf.hover = function()
 end
 
 
-local vue_version = 3;
+local vue_version = 2;
+
+vim.lsp.enable({ 'vuels', 'vue_ls' }, false);
 
 if (vue_version == 2) then
-  local lspconfig = require("lspconfig");
-  lspconfig.vuels.setup({
+  vim.lsp.config("vuels", {
     filetypes = { "vue" },
     init_options = {
       config = {
@@ -40,13 +41,13 @@ if (vue_version == 2) then
       }
     },
   })
-  vim.lsp.enable("vuels", vue_version == 2)
+  vim.lsp.enable({ 'vuels' }, true)
 end
 
 if (vue_version == 3) then
   -- For Mason v2,
   local vue_language_server_path = vim.fn.stdpath('data') ..
-  "/mason/packages/vue-language-server/node_modules/@vue/language-server"
+      "/mason/packages/vue-language-server/node_modules/@vue/language-server"
   local tsserver_filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' }
   local vue_plugin = {
     name = '@vue/typescript-plugin',
@@ -81,5 +82,5 @@ if (vue_version == 3) then
   vim.lsp.config('vtsls', vtsls_config)
   vim.lsp.config('vue_ls', vue_ls_config)
   vim.lsp.config('ts_ls', ts_ls_config)
-  vim.lsp.enable({ 'ts_ls', 'vue_ls' }) -- If using `ts_ls` replace `vtsls` to `ts_ls`
+  vim.lsp.enable({ 'ts_ls', 'vue_ls' }, true) -- If using `ts_ls` replace `vtsls` to `ts_ls`
 end
