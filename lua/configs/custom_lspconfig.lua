@@ -12,28 +12,28 @@ end
 
 local vue2_lsp_config = {
   filetypes = { "vue" },
-  init_options = {
-    config = {
-      vetur = {
-        validation = {
-          template = true,
-          script = true,
-          style = true
-        },
-        completion = {
-          autoImport = true,
-          tagCasing = "kebab",
-          useScaffoldSnippets = false
-        },
-        format = {
-          defaultFormatter = {
-            js = "prettier",
-            ts = "prettier"
-          }
-        }
+  settings = {
+    vetur = {
+      validation = {
+        template = true,
+        script = true,
+        style = true
+      },
+      completion = {
+        autoImport = true,
+        tagCasing = "kebab",
+        useScaffoldSnippets = false
+      },
+      experimental = {
+        templateInterpolationService = true
+      },
+      format = {
+        enable = false
       }
-    }
+    },
   },
+  cmd = { "vls", '--stdio' },
+  root_markers = { "package.json" },
 }
 
 -- For Mason v2,
@@ -79,12 +79,9 @@ local vue_ls_config = {}
 
 vim.lsp.config('vts_ls', vtsls_config)
 vim.lsp.config('vue_ls', vue_ls_config)
+vim.lsp.config('vuels', vue2_lsp_config)
 vim.lsp.enable('vue_ls', false)
 
-local originDeprecate = vim.deprecate;
-vim.deprecate = function() end
-require('lspconfig').vuels.setup(vue2_lsp_config)
-vim.deprecate = originDeprecate
 
 function enableVue2()
   vim.lsp.enable({ 'ts_ls', 'vuels', 'vue_ls' }, false);
