@@ -113,3 +113,16 @@ end, { desc = "Delete other buffers" })
 
 -- find and replace
 map("n", "<leader>rp", function() require("spectre").open() end, { desc = "Start Spectre (Find/Replace)" })
+
+-- vue2/3 toggle
+map('n', '<leader>kk',
+  function()
+    local toggleFuncs = require('configs.custom_lspconfig')
+    local wantVue2 = vim.lsp.is_enabled('vuels') == false;
+    if (wantVue2) then
+      toggleFuncs.enableVue2()
+    else
+      pcall(toggleFuncs.enableVue3)
+    end
+  end,
+  { desc = 'Toggle Vue2/3 lsp' })

@@ -10,77 +10,92 @@ vim.lsp.buf.hover = function()
   }
 end
 
-
-local vue_version = 2;
-
-vim.lsp.enable({ 'vuels', 'vue_ls' }, false);
-
-if (vue_version == 2) then
-  vim.lsp.config("vuels", {
-    filetypes = { "vue" },
-    init_options = {
-      config = {
-        vetur = {
-          validation = {
-            template = true,
-            script = true,
-            style = true
-          },
-          completion = {
-            autoImport = true,
-            tagCasing = "kebab",
-            useScaffoldSnippets = false
-          },
-          format = {
-            defaultFormatter = {
-              js = "prettier",
-              ts = "prettier"
-            }
+local vue2_lsp_config = {
+  filetypes = { "vue" },
+  init_options = {
+    config = {
+      vetur = {
+        validation = {
+          template = true,
+          script = true,
+          style = true
+        },
+        completion = {
+          autoImport = true,
+          tagCasing = "kebab",
+          useScaffoldSnippets = false
+        },
+        format = {
+          defaultFormatter = {
+            js = "prettier",
+            ts = "prettier"
           }
         }
       }
-    },
-  })
-  vim.lsp.enable({ 'vuels' }, true)
-end
+    }
+  },
+}
 
-if (vue_version == 3) then
-  -- For Mason v2,
-  local vue_language_server_path = vim.fn.stdpath('data') ..
-      "/mason/packages/vue-language-server/node_modules/@vue/language-server"
-  local tsserver_filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' }
-  local vue_plugin = {
-    name = '@vue/typescript-plugin',
-    location = vue_language_server_path,
-    languages = { 'vue' },
-    configNamespace = 'typescript',
-  }
-  local vtsls_config = {
-    settings = {
-      vtsls = {
-        tsserver = {
-          globalPlugins = {
-            vue_plugin,
-          },
+-- For Mason v2,
+local vue_language_server_path = vim.fn.stdpath('data') ..
+    "/mason/packages/vue-language-server/node_modules/@vue/language-server"
+local tsserver_filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' }
+local vue_plugin = {
+  name = '@vue/typescript-plugin',
+  location = vue_language_server_path,
+  languages = { 'vue' },
+  configNamespace = 'typescript',
+}
+local vtsls_config = {
+  settings = {
+    vtsls = {
+      tsserver = {
+        globalPlugins = {
+          vue_plugin,
         },
       },
     },
-    filetypes = tsserver_filetypes
-  }
-  local ts_ls_config = {
-    init_options = {
-      plugins = {
-        vue_plugin,
-      },
+  },
+  filetypes = tsserver_filetypes
+}
+local vue3_ts_ls_config = {
+  init_options = {
+    plugins = {
+      vue_plugin,
     },
-    filetypes = tsserver_filetypes,
-  }
+  },
+  filetypes = tsserver_filetypes,
+}
+local vue2_ts_ls_config = {
+  init_options = {
+    plugins = {
+    },
+  },
+  filetypes = tsserver_filetypes,
+}
 
-  -- If you are on most recent `nvim-lspconfig`
-  local vue_ls_config = {}
+-- If you are on most recent `nvim-lspconfig`
+local vue_ls_config = {}
 
-  vim.lsp.config('vtsls', vtsls_config)
-  vim.lsp.config('vue_ls', vue_ls_config)
-  vim.lsp.config('ts_ls', ts_ls_config)
-  vim.lsp.enable({ 'ts_ls', 'vue_ls' }, true) -- If using `ts_ls` replace `vtsls` to `ts_ls`
+vim.lsp.config('vts_ls', vtsls_config)
+vim.lsp.config('vue_ls', vue_ls_config)
+vim.lsp.config('vuels', vue2_lsp_config)
+
+function enableVue2()
+  vim.lsp.enable({ 'ts_ls', 'vuels', 'vue_ls' }, false);
+  vim.lsp.config('ts_ls', vue2_ts_ls_config)
+  vim.lsp.enable({ 'ts_ls', 'vuels' }, true);
 end
+
+function enableVue3()
+  vim.lsp.enable({ 'ts_ls', 'vuels', 'vue_ls' }, false);
+  vim.lsp.config('ts_ls', vue3_ts_ls_config)
+  vim.lsp.enable({ 'ts_ls', 'vue_ls' }, true);
+end
+
+vim.lsp.enable('vue_ls', false)
+
+return {
+  enableVue2 = enableVue2,
+  enableVue3 = enableVue3
+}

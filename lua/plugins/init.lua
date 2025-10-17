@@ -101,7 +101,7 @@ return {
     config = function()
       require("ufo").setup()
     end,
-    event = "BufReadPost",
+    event = "LspAttach",
   },
   {
     "nvimdev/lspsaga.nvim",
@@ -189,7 +189,7 @@ return {
       { "mason-org/mason.nvim", opts = {} },
       "neovim/nvim-lspconfig",
     },
-    event = "VeryLazy",
+    lazy = false,
     config = function()
       require("mason-lspconfig").setup({
         ensure_installed = require("configs.lsp_servers"),
