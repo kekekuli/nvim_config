@@ -79,7 +79,12 @@ local vue_ls_config = {}
 
 vim.lsp.config('vts_ls', vtsls_config)
 vim.lsp.config('vue_ls', vue_ls_config)
-vim.lsp.config('vuels', vue2_lsp_config)
+vim.lsp.enable('vue_ls', false)
+
+local originDeprecate = vim.deprecate;
+vim.deprecate = function() end
+require('lspconfig').vuels.setup(vue2_lsp_config)
+vim.deprecate = originDeprecate
 
 function enableVue2()
   vim.lsp.enable({ 'ts_ls', 'vuels', 'vue_ls' }, false);
@@ -92,8 +97,6 @@ function enableVue3()
   vim.lsp.config('ts_ls', vue3_ts_ls_config)
   vim.lsp.enable({ 'ts_ls', 'vue_ls' }, true);
 end
-
-vim.lsp.enable('vue_ls', false)
 
 return {
   enableVue2 = enableVue2,
