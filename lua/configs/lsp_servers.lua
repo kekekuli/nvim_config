@@ -12,5 +12,6 @@ local servers = {
   "vue_ls",
   "somesass_ls",
   "cssmodules_ls",
+  "rust_analyzer"
 }
 return servers;
