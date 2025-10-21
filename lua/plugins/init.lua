@@ -189,12 +189,11 @@ return {
       { "mason-org/mason.nvim", opts = {} },
       "neovim/nvim-lspconfig",
     },
-    lazy = false,
+    event = "BufReadPre",
     config = function()
       require("mason-lspconfig").setup({
         ensure_installed = require("configs.lsp_servers"),
       })
-
       require("configs.custom_lspconfig");
     end
   },
@@ -204,7 +203,7 @@ return {
   },
   {
     'chentoast/marks.nvim',
-    event = "VeryLazy", -- 打开文件时加载
+    event = "BufReadPost",
     config = function()
       require('marks').setup({})
     end
@@ -226,6 +225,11 @@ return {
     config = function()
       require('telescope').setup {}
       require('telescope').load_extension('zoxide')
+
+      if vim.fn.executable("zoxide") == 0 then
+        -- 如果不可执行 (返回 0)，则打印错误信息并退出
+        vim.notify("Error: zoxide is not installed or not in your PATH.", vim.log.levels.ERROR)
+      end
     end
   }
 }

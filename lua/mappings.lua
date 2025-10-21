@@ -126,11 +126,6 @@ end, { desc = "Delete other buffers" })
 -- find and replace
 map("n", "<leader>rp", function() require("spectre").open() end, { desc = "Start Spectre (Find/Replace)" })
 map("n", "<leader>fd", function()
-    if vim.fn.executable("zoxide") == 0 then
-      -- 如果不可执行 (返回 0)，则打印错误信息并退出
-      vim.notify("Error: zoxide is not installed or not in your PATH.", vim.log.levels.ERROR)
-      return
-    end
     require("telescope").extensions.zoxide.list {}
   end,
   { desc = "Switch working directory with zoxide" })
