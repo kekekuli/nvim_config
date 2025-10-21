@@ -37,7 +37,7 @@ map(
   "x",
   "<leader>tr",
   function()
-    require("pantran").motion_translate()
+    return require("pantran").motion_translate()
   end,
   vim.tbl_extend("force", opts, {
     desc = "Translate selected text",
@@ -70,6 +70,18 @@ map("n", "<leader>gg", function()
   }
   terminals.lazygit:toggle()
 end, vim.tbl_extend("force", ToggleOpts, { desc = "Toggle lazygit terminal" }))
+map("n", "<leader>gr", function()
+  local Terminal = require("toggleterm.terminal").Terminal
+  if terminals.lazygit and terminals.lazygit:is_open() then
+    terminals.lazygit:close()
+  end
+  terminals.lazygit = Terminal:new {
+    cmd = "lazygit",
+    direction = "float",
+  }
+  terminals.lazygit:toggle()
+end, vim.tbl_extend("force", ToggleOpts, { desc = "Reset lazygit working directory" }))
+
 
 -- ufo fold
 map("n", "zR", function() require("ufo").openAllFolds() end)
@@ -113,6 +125,15 @@ end, { desc = "Delete other buffers" })
 
 -- find and replace
 map("n", "<leader>rp", function() require("spectre").open() end, { desc = "Start Spectre (Find/Replace)" })
+map("n", "<leader>fd", function()
+    if vim.fn.executable("zoxide") == 0 then
+      -- 如果不可执行 (返回 0)，则打印错误信息并退出
+      vim.notify("Error: zoxide is not installed or not in your PATH.", vim.log.levels.ERROR)
+      return
+    end
+    require("telescope").extensions.zoxide.list {}
+  end,
+  { desc = "Switch working directory with zoxide" })
 
 -- vue2/3 toggle
 map('n', '<leader>kk',
