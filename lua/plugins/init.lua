@@ -215,5 +215,17 @@ return {
     dependencies = {
       'nvim-lua/plenary.nvim'
     }
+  },
+  {
+    'jvgrootveld/telescope-zoxide',
+    dependencies = {
+      'nvim-telescope/telescope.nvim',
+      'nvim-lua/popup.nvim',
+      'nvim-lua/plenary.nvim'
+    },
+    config = function()
+      require('telescope').setup {}
+      require('telescope').load_extension('zoxide')
+    end
   }
 }
