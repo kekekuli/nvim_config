@@ -14,24 +14,7 @@ return {
   },
   {
     "tpope/vim-fugitive",
-    cmd = {
-      "Git",        -- 打开 Fugitive 主界面，最常用
-      "G",          -- :Git 的简写，方便
-      "Gstatus",    -- 查看当前 git 状态
-      "Gdiffsplit", -- 分割窗口显示文件差异
-      "Gread",      -- 从 git 仓库恢复文件（放弃本地修改）
-      "Gwrite",     -- 保存修改到 git
-      "Gblame",     -- 查看文件某行的 git blame 信息
-      "Glog",       -- 查看提交历史
-      "Gpush",      -- git push
-      "Gpull",      -- git pull
-      "Gcommit",    -- git commit
-      "Gbranch",    -- 分支管理
-      "Gcheckout",  -- 切换分支或提交
-      "Gmerge",     -- 合并分支
-      "Gstash",     -- stash 相关操作
-      "Greset",     -- reset 代码
-    },
+    cmd = { "Git", "G" },
   },
   {
     "potamides/pantran.nvim",
@@ -231,5 +214,9 @@ return {
         vim.notify("Error: zoxide is not installed or not in your PATH.", vim.log.levels.ERROR)
       end
     end
+  },
+  {
+    "folke/flash.nvim",
+    event = "VeryLazy",
   }
 }
