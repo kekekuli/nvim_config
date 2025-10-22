@@ -1,12 +1,12 @@
 require "nvchad.mappings"
 
+--delete not need or conflict default mappings from nvchad
+vim.keymap.del("n", "<c-s>") -- delete default save mapping, I perfer :w
+
 -- add yours here
 
 local map = vim.keymap.set
-
-map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
-map("n", "<C-i>", "<C-i>", { desc = "Jump forward" })
 
 -- pantran configs
 local opts = { silent = true, expr = true, noremap = true }
@@ -129,6 +129,14 @@ map("n", "<leader>fd", function()
     require("telescope").extensions.zoxide.list {}
   end,
   { desc = "Switch working directory with zoxide" })
+-- flash search
+map({ "n", "x", "o" }, "s", function() require('flash').jump(); end, { desc = "Flash" })
+map({ "n", "x", "o" }, "S", function() require('flash').treesitter(); end, { desc = "Flash Treesitter" })
+map('o', "r", function() require('flash').remote(); end, { desc = "Remote Flash" })
+map({ 'o', 'x' }, "R", function() require('flash').treesitter_search(); end, { desc = "Flash Treesitter Search" })
+map("c", "<c-s>", function()
+  require('flash').toggle();
+end, { desc = "Toggle Flash Search" })
 
 -- vue2/3 toggle
 map('n', '<leader>kk',
