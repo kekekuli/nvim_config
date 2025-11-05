@@ -3,8 +3,6 @@ require "nvchad.mappings"
 --delete not need or conflict default mappings from nvchad
 vim.keymap.del("n", "<c-s>") -- delete default save mapping, I perfer :w
 
--- add yours here
-
 local map = vim.keymap.set
 map("i", "jk", "<ESC>")
 
@@ -150,3 +148,22 @@ map('n', '<leader>kk',
     end
   end,
   { desc = 'Toggle Vue2/3 lsp' })
+
+
+local os_name = vim.loop.os_uname().sysname
+local open_cmd = ''
+local path_modifier = '%:h'
+os_name = string.lower(os_name)
+
+if string.find(os_name, 'darwin') then
+  open_cmd = 'open'
+elseif string.find(os_name, 'linux') then
+  open_cmd = 'xdg-open'
+elseif string.find(os_name, 'windows') then
+  open_cmd = 'start'
+  path_modifier = '%'
+end
+
+local open_filebrowser_cmd = open_cmd .. ' ' .. path_modifier .. '<CR>'
+
+map('n', '<leader>go', ':!' .. open_filebrowser_cmd, { desc = 'Open file in finder' })
