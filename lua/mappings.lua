@@ -142,12 +142,20 @@ map('n', '<leader>kk',
     local toggleFuncs = require('configs.custom_lspconfig')
     local wantVue2 = vim.lsp.is_enabled('vuels') == false;
     if (wantVue2) then
-      toggleFuncs.enableVue2()
+      toggleFuncs.EnableVue2()
     else
-      pcall(toggleFuncs.enableVue3)
+      pcall(toggleFuncs.EnableVue3)
     end
   end,
   { desc = 'Toggle Vue2/3 lsp' })
+
+map('n', '<leader>kj',
+  function()
+    local toggleFuncs = require('configs.custom_lspconfig')
+    pcall(toggleFuncs.EnableLocalValor)
+  end,
+  { desc = 'Use volar for vue2' }
+)
 
 
 local os_name = vim.loop.os_uname().sysname

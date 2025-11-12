@@ -8,7 +8,8 @@ local options = {
     css = { "prettier" },
     html = { "prettier" },
     json = { "prettier" },
-    go = { "gofmt" }
+    go = { "gofmt" },
+    vue = { "prettier" }
   },
 
   format_on_save = {
