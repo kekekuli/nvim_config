@@ -174,4 +174,7 @@ end
 
 local open_filebrowser_cmd = open_cmd .. ' ' .. path_modifier .. '<CR>'
 
+-- file and path
 map('n', '<leader>go', ':!' .. open_filebrowser_cmd, { desc = 'Open file in finder' })
+map('n', '<leader>ca', ':let @+=expand("%:p")<CR>', { desc = 'Copy file absolute path' })
+map('n', '<leader>cp', ':let @+=expand("%")<CR>', { desc = 'Copy file relative path' })
