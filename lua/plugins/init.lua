@@ -217,7 +217,16 @@ return {
   },
   {
     "folke/flash.nvim",
-    event = "VeryLazy",
+    event = "BufReadPost",
+    config = function()
+      require("flash").setup({
+        modes = {
+          char = {
+            jump_labels = true
+          }
+        }
+      })
+    end
   },
   {
     'sindrets/diffview.nvim',
