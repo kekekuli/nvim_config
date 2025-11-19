@@ -109,8 +109,8 @@ map("n", "gh", "<cmd>Lspsaga finder<CR>", { desc = "Lspsaga finder" })
 map("n", "<leader>cn", "<cmd>Lspsaga code_action<CR>", { desc = "Code Action" })
 map("n", "<leader>rr", "<cmd>Lspsaga rename<CR>", { desc = "Rename" })
 map("n", "gp", "<cmd>Lspsaga peek_definition<CR>", { desc = "Peek Definition" })
-map("n", "<leader>sl", "<cmd>Lspsaga show_line_diagnostics<CR>", { desc = "Line Diagnostics" })
-map("n", "<leader>sb", "<cmd>Lspsaga show_buf_diagnostics<CR>", { desc = "Buffer Diagnostics" })
+map("n", "gl", "<cmd>Lspsaga show_line_diagnostics<CR>", { desc = "Line Diagnostics" })
+map("n", "gb", "<cmd>Lspsaga show_buf_diagnostics<CR>", { desc = "Buffer Diagnostics" })
 map("n", "[e", "<cmd>Lspsaga diagnostic_jump_prev<CR>", { desc = "Prev Diagnostic" })
 map("n", "]e", "<cmd>Lspsaga diagnostic_jump_next<CR>", { desc = "Next Diagnostic" })
 
@@ -147,7 +147,12 @@ map("n", "<leader>fd", function()
   { desc = "Switch working directory with zoxide" })
 -- flash search
 map({ "n", "x", "o" }, "s", function() require('flash').jump(); end, { desc = "Flash" })
-map({ "n", "x", "o" }, "S", function() require('flash').treesitter(); end, { desc = "Flash Treesitter" })
+map({ "n", "x", "o" }, "S", function()
+  require('flash').jump({
+    pattern = vim.fn.expand("<cword>")
+  });
+end, { desc = "Flash Treesitter" })
+map({ "n", "x", "o" }, "<leader>s", function() require('flash').treesitter(); end, { desc = "Flash Treesitter" })
 map('o', "r", function() require('flash').remote(); end, { desc = "Remote Flash" })
 map({ 'n', 'o', 'x' }, "<leader>R", function() require('flash').treesitter_search(); end,
   { desc = "Flash Treesitter Search" })
@@ -200,5 +205,5 @@ map('n', '<leader>cp', ':let @+=expand("%")<CR>', { desc = 'Copy file relative p
 
 -- version control and conflict resolve
 map('n', 'gv', '<cmd>DiffviewOpen<CR>', { desc = 'Go to diffview ' })
-map('n', 'gl', '<cmd>DiffviewClose<CR>', { desc = 'Close diffview ' })
+map('n', 'gj', '<cmd>DiffviewClose<CR>', { desc = 'Close diffview ' })
 map('n', 'gk', '<cmd>DiffviewFileHistory<CR>', { desc = 'Show file history' })
