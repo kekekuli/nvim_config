@@ -86,11 +86,29 @@ map("n", "zR", function() require("ufo").openAllFolds() end)
 map("n", "zM", function() require("ufo").closeAllFolds() end)
 
 -- lspsaga
+-- for override lsp mappings, http://nvchad.com/docs/config/mappings/
+local servers = require('configs.lsp_servers')
+local nvlsp = require("nvchad.configs.lspconfig");
+local disableDefaultMapping = function(client, bufnr)
+  nvlsp.on_attach(client, bufnr)
+
+  map("n", "gd", "<cmd>Lspsaga goto_definition<CR>", { desc = "Go To Definition (Quick)", buffer = bufnr })
+end
+
+for _, lsp in ipairs(servers) do
+  vim.lsp.config(lsp, {
+    on_attach = disableDefaultMapping,
+    on_init = nvlsp.on_init,
+    capabilities = nvlsp.capabilities
+  })
+end
+
+map("n", "<leader>gd", "<cmd>lua vim.lsp.buf.definition()<CR>",
+  { desc = "Go To Definition (Lsp native)" })
 map("n", "gh", "<cmd>Lspsaga finder<CR>", { desc = "Lspsaga finder" })
-map("n", "<leader>ca", "<cmd>Lspsaga code_action<CR>", { desc = "Code Action" })
+map("n", "<leader>cn", "<cmd>Lspsaga code_action<CR>", { desc = "Code Action" })
 map("n", "<leader>rr", "<cmd>Lspsaga rename<CR>", { desc = "Rename" })
-map("n", "<leader>gp", "<cmd>Lspsaga peek_definition<CR>", { desc = "Peek Definition" })
-map("n", "<leader>gd", "<cmd>Lspsaga goto_definition<CR>", { desc = "Go To Definition" })
+map("n", "gp", "<cmd>Lspsaga peek_definition<CR>", { desc = "Peek Definition" })
 map("n", "<leader>sl", "<cmd>Lspsaga show_line_diagnostics<CR>", { desc = "Line Diagnostics" })
 map("n", "<leader>sb", "<cmd>Lspsaga show_buf_diagnostics<CR>", { desc = "Buffer Diagnostics" })
 map("n", "[e", "<cmd>Lspsaga diagnostic_jump_prev<CR>", { desc = "Prev Diagnostic" })
@@ -131,7 +149,8 @@ map("n", "<leader>fd", function()
 map({ "n", "x", "o" }, "s", function() require('flash').jump(); end, { desc = "Flash" })
 map({ "n", "x", "o" }, "S", function() require('flash').treesitter(); end, { desc = "Flash Treesitter" })
 map('o', "r", function() require('flash').remote(); end, { desc = "Remote Flash" })
-map({ 'o', 'x' }, "R", function() require('flash').treesitter_search(); end, { desc = "Flash Treesitter Search" })
+map({ 'n', 'o', 'x' }, "<leader>R", function() require('flash').treesitter_search(); end,
+  { desc = "Flash Treesitter Search" })
 map("c", "<c-s>", function()
   require('flash').toggle();
 end, { desc = "Toggle Flash Search" })
@@ -178,3 +197,8 @@ local open_filebrowser_cmd = open_cmd .. ' ' .. path_modifier .. '<CR>'
 map('n', '<leader>go', ':!' .. open_filebrowser_cmd, { desc = 'Open file in finder' })
 map('n', '<leader>ca', ':let @+=expand("%:p")<CR>', { desc = 'Copy file absolute path' })
 map('n', '<leader>cp', ':let @+=expand("%")<CR>', { desc = 'Copy file relative path' })
+
+-- version control and conflict resolve
+map('n', 'gv', '<cmd>DiffviewOpen<CR>', { desc = 'Go to diffview ' })
+map('n', 'gl', '<cmd>DiffviewClose<CR>', { desc = 'Close diffview ' })
+map('n', 'gk', '<cmd>DiffviewFileHistory<CR>', { desc = 'Show file history' })
