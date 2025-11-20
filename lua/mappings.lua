@@ -206,4 +206,4 @@ map('n', '<leader>cp', ':let @+=expand("%")<CR>', { desc = 'Copy file relative p
 -- version control and conflict resolve
 map('n', 'gv', '<cmd>DiffviewOpen<CR>', { desc = 'Go to diffview ' })
 map('n', 'gj', '<cmd>DiffviewClose<CR>', { desc = 'Close diffview ' })
-map('n', 'gk', '<cmd>DiffviewFileHistory<CR>', { desc = 'Show file history' })
+map('n', 'gk', '<cmd>DiffviewFileHistory %<CR>', { desc = 'Show current file history' })
