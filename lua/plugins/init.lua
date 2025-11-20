@@ -250,8 +250,8 @@ return {
       })
 
       vim.api.nvim_set_hl(0, "DiffText", {
-        bg = "#E5C07B", -- Onedark的亮金色作为背景
-        fg = '#282c34', -- 文本颜色设为深色
+        fg = "#E5C07B", -- Onedark的亮金色作为背景
+        bg = '#4e4e1c', -- 文本颜色设为深色
       })
 
       vim.api.nvim_set_hl(0, "DiffTextAdd", {
