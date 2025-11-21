@@ -87,22 +87,9 @@ map("n", "zM", function() require("ufo").closeAllFolds() end)
 
 -- lspsaga
 -- for override lsp mappings, http://nvchad.com/docs/config/mappings/
-local servers = require('configs.lsp_servers')
-local nvlsp = require("nvchad.configs.lspconfig");
-local disableDefaultMapping = function(client, bufnr)
-  nvlsp.on_attach(client, bufnr)
+map("n", "gd", "<cmd>Lspsaga goto_definition<CR>", { desc = "Go To Definition (Quick)" })
+map("n", "K", "<cmd>Lspsaga hover_doc<CR>", { desc = "Hover Documentation" })
 
-  map("n", "gd", "<cmd>Lspsaga goto_definition<CR>", { desc = "Go To Definition (Quick)", buffer = bufnr })
-  map("n", "K", "<cmd>Lspsaga hover_doc<CR>", { desc = "Hover Documentation", buffer = bufnr })
-end
-
-for _, lsp in ipairs(servers) do
-  vim.lsp.config(lsp, {
-    on_attach = disableDefaultMapping,
-    on_init = nvlsp.on_init,
-    capabilities = nvlsp.capabilities
-  })
-end
 
 map("n", "<leader>gd", "<cmd>lua vim.lsp.buf.definition()<CR>",
   { desc = "Go To Definition (Lsp native)" })
@@ -114,6 +101,8 @@ map("n", "gl", "<cmd>Lspsaga show_line_diagnostics<CR>", { desc = "Line Diagnost
 map("n", "gb", "<cmd>Lspsaga show_buf_diagnostics<CR>", { desc = "Buffer Diagnostics" })
 map("n", "[e", "<cmd>Lspsaga diagnostic_jump_prev<CR>", { desc = "Prev Diagnostic" })
 map("n", "]e", "<cmd>Lspsaga diagnostic_jump_next<CR>", { desc = "Next Diagnostic" })
+map("n", "ga", "<cmd>Lspsaga incoming_calls<CR>", { desc = "Incoming Calls" })
+map("n", "go", "<cmd>Lspsaga outgoing_calls<CR>", { desc = "Outgoing Calls" })
 
 -- dap, debug related
 map("n", "<leader>j", function() require("dap").toggle_breakpoint() end, { desc = "Toggle breakpoint" })
