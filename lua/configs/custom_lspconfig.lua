@@ -41,14 +41,16 @@ local vue2_lsp_config = {
 -- For Mason v2,
 local vue_language_server_path = vim.fn.stdpath('data') ..
     "/mason/packages/vue-language-server/node_modules/@vue/language-server"
-local tsserver_filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' }
+local tsserver_filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact' }
+
+local tsserver_filetypes_withVue = { unpack(tsserver_filetypes), 'vue' }
 
 local vue2_ts_ls_config = {
   init_options = {
     plugins = {
     },
   },
-  filetypes = tsserver_filetypes,
+  filetypes = tsserver_filetypes
 }
 
 function getVuePluginConfig(useWorkspaceDependencies)
@@ -74,7 +76,7 @@ function getVue3TsLSPConfig(useWorkspaceDependencies)
         vue_plugin,
       },
     },
-    filetypes = tsserver_filetypes,
+    filetypes = tsserver_filetypes_withVue,
   }
 end
 

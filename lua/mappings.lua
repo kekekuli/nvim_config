@@ -93,6 +93,7 @@ local disableDefaultMapping = function(client, bufnr)
   nvlsp.on_attach(client, bufnr)
 
   map("n", "gd", "<cmd>Lspsaga goto_definition<CR>", { desc = "Go To Definition (Quick)", buffer = bufnr })
+  map("n", "K", "<cmd>Lspsaga hover_doc<CR>", { desc = "Hover Documentation", buffer = bufnr })
 end
 
 for _, lsp in ipairs(servers) do
