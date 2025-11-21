@@ -86,10 +86,27 @@ map("n", "zR", function() require("ufo").openAllFolds() end)
 map("n", "zM", function() require("ufo").closeAllFolds() end)
 
 -- lspsaga
--- for override lsp mappings, http://nvchad.com/docs/config/mappings/
-map("n", "gd", "<cmd>Lspsaga goto_definition<CR>", { desc = "Go To Definition (Quick)" })
-map("n", "K", "<cmd>Lspsaga hover_doc<CR>", { desc = "Hover Documentation" })
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("OverrideLspMappings", { clear = true }),
+  callback = function(args)
+    local bufnr = args.buf
 
+    -- hope below code run after lsp auto setted keymappings
+    -- there is no easy way to override keymappings from LSP
+    vim.defer_fn(function()
+      if vim.api.nvim_buf_is_loaded(bufnr) then
+        map("n", "gd", "<cmd>Lspsaga goto_definition<CR>", {
+          desc = "Lspsaga: Go To Definition",
+          buffer = bufnr,
+        })
+        map("n", "K", "<cmd>Lspsaga hover_doc<CR>", {
+          desc = "Lspsaga: Hover Documentation",
+          buffer = bufnr,
+        })
+      end
+    end, 0)
+  end,
+})
 
 map("n", "<leader>gd", "<cmd>lua vim.lsp.buf.definition()<CR>",
   { desc = "Go To Definition (Lsp native)" })
