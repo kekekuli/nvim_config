@@ -152,6 +152,13 @@ map("n", "<leader>fd", function()
     require("telescope").extensions.zoxide.list {}
   end,
   { desc = "Switch working directory with zoxide" })
+map("n", "<leader>fk", function()
+  local word = vim.fn.expand("<cword>")
+  require('telescope.builtin').current_buffer_fuzzy_find { default_text = word }
+end, { desc = "telescope find word under cursor" })
+map("n", "<leader>fc", function()
+  require('telescope.builtin').grep_string()
+end, { desc = "telescope find word under cursor" })
 -- flash search
 map({ "n", "x", "o" }, "s", function() require('flash').jump(); end, { desc = "Flash" })
 map({ "n", "x", "o" }, "S", function()
