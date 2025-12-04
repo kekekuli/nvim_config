@@ -170,7 +170,7 @@ map({ "n", "x", "o" }, "<leader>s", function() require('flash').treesitter(); en
 map('o', "r", function() require('flash').remote(); end, { desc = "Remote Flash" })
 map({ 'n', 'o', 'x' }, "<leader>R", function() require('flash').treesitter_search(); end,
   { desc = "Flash Treesitter Search" })
-map("c", "<c-s>", function()
+map({ "n", "o", 'c' }, "<c-s>", function()
   require('flash').toggle();
 end, { desc = "Toggle Flash Search" })
 

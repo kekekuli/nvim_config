@@ -91,7 +91,7 @@ return {
     config = function()
       require("lspsaga").setup {
         lightbulb = {
-          debounce = 1000,
+          enable = false
         },
       }
     end,
