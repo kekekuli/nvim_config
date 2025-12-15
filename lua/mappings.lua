@@ -155,17 +155,17 @@ map("n", "<leader>fd", function()
 map("n", "<leader>fk", function()
   local word = vim.fn.expand("<cword>")
   require('telescope.builtin').current_buffer_fuzzy_find { default_text = word }
-end, { desc = "telescope find word under cursor" })
+end, { desc = "telescope find word under cursor current buffer" })
 map("n", "<leader>fc", function()
   require('telescope.builtin').grep_string()
-end, { desc = "telescope find word under cursor" })
+end, { desc = "telescope find word under cursor workspace" })
 -- flash search
 map({ "n", "x", "o" }, "s", function() require('flash').jump(); end, { desc = "Flash" })
 map({ "n", "x", "o" }, "S", function()
   require('flash').jump({
     pattern = vim.fn.expand("<cword>")
   });
-end, { desc = "Flash Treesitter" })
+end, { desc = "Flash find word under cursor" })
 map({ "n", "x", "o" }, "<leader>s", function() require('flash').treesitter(); end, { desc = "Flash Treesitter" })
 map('o', "r", function() require('flash').remote(); end, { desc = "Remote Flash" })
 map({ 'n', 'o', 'x' }, "<leader>R", function() require('flash').treesitter_search(); end,
