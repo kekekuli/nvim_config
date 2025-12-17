@@ -258,5 +258,33 @@ return {
         link = "DiffText"
       })
     end
+  },
+
+  {
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    event = "BufReadPost",
+    config = function()
+      require('nvim-treesitter.configs').setup {
+        textobjects = {
+          select = {
+            enable = true,
+            lookahead = true,
+            keymaps = {
+              ['af'] = '@function.outer',
+              ['if'] = '@function.inner',
+
+              ['ab'] = '@block.outer',
+              ['ib'] = '@block.inner',
+
+              ['ac'] = '@call.outer',
+              ['ic'] = '@call.inner',
+
+              ['al'] = '@lexical_declaration',
+            }
+          }
+        },
+      }
+    end
   }
+
 }
