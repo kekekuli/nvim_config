@@ -1,4 +1,6 @@
 ; extends
-; 针对 Vue 的结构定义
-((script_element (raw_text) @lexical_declaration) 
- (#make-range! "lexical-declaration.outer" @lexical_declaration))
+((script_element (raw_text) @inject_block) 
+ (#make-range! "lexical_block" @inject_block))
+
+((style_element (raw_text) @inject_block) 
+ (#make-range! "lexical_block" @inject_block))
