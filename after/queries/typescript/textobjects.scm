@@ -1,2 +1,6 @@
 ; extends
-(lexical_declaration) @lexical_declaration
+[
+  (export_statement)
+  (lexical_declaration)
+  (type_alias_declaration)
+] @lexical_block

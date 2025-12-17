@@ -279,7 +279,7 @@ return {
               ['ac'] = '@call.outer',
               ['ic'] = '@call.inner',
 
-              ['al'] = '@lexical_declaration',
+              ['al'] = '@lexical_block',
             }
           }
         },
