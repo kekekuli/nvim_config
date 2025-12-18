@@ -217,9 +217,9 @@ map('n', '<leader>go', ':!' .. open_filebrowser_cmd, { desc = 'Open file in find
 map('n', '<leader>ca', ':let @+=expand("%:p")<CR>', { desc = 'Copy file absolute path' })
 map('n', '<leader>cp', ':let @+=expand("%")<CR>', { desc = 'Copy file relative path' })
 
-map('n', '<M-1>', function() require('harpoon.ui').nav_file(1) end, { desc = 'Go to harpoon mark 1' })
-map('n', '<M-2>', function() require('harpoon.ui').nav_file(2) end, { desc = 'Go to harpoon mark 2' })
-map('n', '<M-3>', function() require('harpoon.ui').nav_file(3) end, { desc = 'Go to harpoon mark 3' })
+map('n', '<C-1>', function() require('harpoon.ui').nav_file(1) end, { desc = 'Go to harpoon mark 1' })
+map('n', '<C-2>', function() require('harpoon.ui').nav_file(2) end, { desc = 'Go to harpoon mark 2' })
+map('n', '<C-3>', function() require('harpoon.ui').nav_file(3) end, { desc = 'Go to harpoon mark 3' })
 map('n', 'gm', function() require('harpoon.ui').toggle_quick_menu() end, { desc = 'open harpoon ui' })
 map('n', '<leader>a', function() require('harpoon.mark').add_file() end, { desc = 'add file to harpoon list' })
 
