@@ -285,6 +285,16 @@ return {
         },
       }
     end
+  },
+  {
+    'ThePrimeagen/harpoon',
+    event = "BufReadPost",
+    config = function()
+      require('harpoon').setup()
+      require('telescope').load_extension('harpoon')
+    end,
+    dependencies = {
+      'nvim-lua/plenary.nvim'
+    }
   }
-
 }
