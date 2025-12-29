@@ -43,43 +43,47 @@ map(
 )
 
 --Toggleterm configs
+local Terminal = require("toggleterm.terminal")
 local ToggleOpts = { silent = true, noremap = true }
-local terminals = {}
+local function toggleTerm(count, initCmd)
+  local t = Terminal.get(count)
+  if not t then
+    t = Terminal.Terminal:new { count = count, direction = "float", cmd = initCmd }
+  end
+  t:toggle()
+end
+local function restartTerm(count, initCmd)
+  local t = Terminal.get(count)
+  if (t) then
+    t:shutdown()
+  end
+
+  toggleTerm(count, initCmd)
+end
 map("n", "<leader>1", function()
-  local Terminal = require("toggleterm.terminal").Terminal
-  terminals[1] = terminals[1] or Terminal:new { count = 1, direction = "float" }
-  terminals[1]:toggle()
+  toggleTerm(1)
 end, vim.tbl_extend("force", ToggleOpts, { desc = "Toggle float terminal #1" }))
 map("n", "<leader>2", function()
-  local Terminal = require("toggleterm.terminal").Terminal
-  terminals[2] = terminals[2] or Terminal:new { count = 2, direction = "float" }
-  terminals[2]:toggle()
+  toggleTerm(2)
 end, vim.tbl_extend("force", ToggleOpts, { desc = "Toggle float terminal #2" }))
 map("n", "<leader>3", function()
-  local Terminal = require("toggleterm.terminal").Terminal
-  terminals[3] = terminals[3] or Terminal:new { count = 3, direction = "float" }
-  terminals[3]:toggle()
+  toggleTerm(3)
 end, vim.tbl_extend("force", ToggleOpts, { desc = "Toggle float terminal #3" }))
 map("n", "<leader>gg", function()
-  local Terminal = require("toggleterm.terminal").Terminal
-  terminals.lazygit = terminals.lazygit or Terminal:new {
-    cmd = "lazygit",
-    direction = "float",
-  }
-  terminals.lazygit:toggle()
+  toggleTerm(0, "lazygit");
 end, vim.tbl_extend("force", ToggleOpts, { desc = "Toggle lazygit terminal" }))
 map("n", "<leader>gr", function()
-  local Terminal = require("toggleterm.terminal").Terminal
-  if terminals.lazygit and terminals.lazygit:is_open() then
-    terminals.lazygit:close()
-  end
-  terminals.lazygit = Terminal:new {
-    cmd = "lazygit",
-    direction = "float",
-  }
-  terminals.lazygit:toggle()
+  restartTerm(0, "lazygit");
 end, vim.tbl_extend("force", ToggleOpts, { desc = "Reset lazygit working directory" }))
-
+map("n", "<leader>d1", function()
+  restartTerm(1)
+end, vim.tbl_extend("force", ToggleOpts, { desc = "Reset lazygit working directory" }))
+map("n", "<leader>d2", function()
+  restartTerm(2)
+end, vim.tbl_extend("force", ToggleOpts, { desc = "Reset lazygit working directory" }))
+map("n", "<leader>d3", function()
+  restartTerm(3)
+end, vim.tbl_extend("force", ToggleOpts, { desc = "Reset lazygit working directory" }))
 
 -- ufo fold
 map("n", "zR", function() require("ufo").openAllFolds() end)
