@@ -12,6 +12,9 @@ local servers = {
   "vue_ls",
   "somesass_ls",
   "cssmodules_ls",
-  "rust_analyzer"
+  "rust_analyzer",
+  "graphql",
+  "elp",
+  "elixirls",
 }
 return servers;
