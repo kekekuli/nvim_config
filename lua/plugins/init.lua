@@ -145,6 +145,7 @@ return {
       ensure_installed = {
         "javascript", "typescript", "html", "css", "tsx", "scss",
         "go", "lua", "c", "cpp", "python", "vue", 'embedded_template',
+        "json", "erlang", "graphql", "rust", "elixir", "go", "yaml"
       },
       highlight = {
         enable = true
