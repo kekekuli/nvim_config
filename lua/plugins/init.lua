@@ -145,7 +145,8 @@ return {
       ensure_installed = {
         "javascript", "typescript", "html", "css", "tsx", "scss",
         "go", "lua", "c", "cpp", "python", "vue", 'embedded_template',
-        "json", "erlang", "graphql", "rust", "elixir", "go", "yaml"
+        "json", "erlang", "graphql", "rust", "elixir", "go", "yaml",
+        "markdown", "markdown_inline", "latex",
       },
       highlight = {
         enable = true
@@ -297,5 +298,27 @@ return {
     dependencies = {
       'nvim-lua/plenary.nvim'
     }
+  },
+  {
+    '3rd/image.nvim',
+    event = "BufReadPost",
+    build = false,
+    opts = {
+      processor = "magick_cli",
+    },
+    config = function()
+      require('image').setup()
+
+      if (vim.fn.executable("magick") == 0) then
+        vim.notify("Error: ImageMagick is not installed, which is required by image.nvim", vim.log.levels.ERROR)
+      end
+    end
+  },
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+    opts = {
+    },
+    event = "BufReadPost"
   }
 }
