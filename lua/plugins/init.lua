@@ -265,6 +265,9 @@ return {
   {
     'nvim-treesitter/nvim-treesitter-textobjects',
     event = "BufReadPost",
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter'
+    },
     config = function()
       require('nvim-treesitter.configs').setup {
         textobjects = {
@@ -320,5 +323,10 @@ return {
     opts = {
     },
     event = "BufReadPost"
+  },
+  {
+    "HiPhish/rainbow-delimiters.nvim",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    event = "BufReadPost",
   }
 }
