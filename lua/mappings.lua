@@ -228,6 +228,7 @@ map('n', 'gm', function() require('harpoon.ui').toggle_quick_menu() end, { desc 
 map('n', '<leader>a', function() require('harpoon.mark').add_file() end, { desc = 'add file to harpoon list' })
 
 -- version control and conflict resolve
-map('n', 'gv', '<cmd>DiffviewOpen<CR>', { desc = 'Go to diffview ' })
+map('n', 'gs', '<cmd>DiffviewOpen<CR>', { desc = 'Go to current diffview ' })
+map('n', 'gv', '<cmd>DiffviewOpen HEAD~1..HEAD<CR>', { desc = 'Go to current diffview ' })
 map('n', 'gj', '<cmd>DiffviewClose<CR>', { desc = 'Close diffview ' })
 map('n', 'gk', '<cmd>DiffviewFileHistory %<CR>', { desc = 'Show current file history' })
