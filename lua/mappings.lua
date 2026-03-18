@@ -233,8 +233,8 @@ local function diffOpenWithInput()
 end
 
 -- version control and conflict resolve
-map('n', 'gs', '<cmd>DiffviewOpen<CR>', { desc = 'Go to current diffview ' })
+map('n', 'gs', '<cmd>DiffviewOpen<CR>', { desc = 'See Uncommitted changes' })
 map('n', '<leader>gl', diffOpenWithInput, { desc = 'open diffview with input' })
-map('n', 'gv', '<cmd>DiffviewOpen HEAD~1..HEAD<CR>', { desc = 'Go to current diffview ' })
+map('n', 'gv', '<cmd>DiffviewOpen HEAD~1..HEAD<CR>', { desc = 'See the last commit changes' })
 map('n', 'gj', '<cmd>DiffviewClose<CR>', { desc = 'Close diffview ' })
 map('n', 'gk', '<cmd>DiffviewFileHistory %<CR>', { desc = 'Show current file history' })
