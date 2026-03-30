@@ -124,6 +124,7 @@ map("n", "[e", "<cmd>Lspsaga diagnostic_jump_prev<CR>", { desc = "Prev Diagnosti
 map("n", "]e", "<cmd>Lspsaga diagnostic_jump_next<CR>", { desc = "Next Diagnostic" })
 map("n", "ga", "<cmd>Lspsaga incoming_calls<CR>", { desc = "Incoming Calls" })
 map("n", "go", "<cmd>Lspsaga outgoing_calls<CR>", { desc = "Outgoing Calls" })
+map('n', "<leader>o", "<cmd>Lspsaga outline<CR>", { desc = "Outline structure" })
 
 -- dap, debug related
 map("n", "<leader>j", function() require("dap").toggle_breakpoint() end, { desc = "Toggle breakpoint" })
