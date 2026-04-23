@@ -328,5 +328,12 @@ return {
     "HiPhish/rainbow-delimiters.nvim",
     dependencies = "nvim-treesitter/nvim-treesitter",
     event = "BufReadPost",
+  },
+  {
+    "andymass/vim-matchup",
+    event = "BufReadPost",
+    config = function()
+      vim.g.matchup_treesitter_stopline = 500
+    end
   }
 }
