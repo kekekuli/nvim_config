@@ -84,7 +84,8 @@ local function withLazydocker(fn)
   end
   local context = vim.fn.system("docker context show 2>/dev/null"):gsub("%s+", "")
   if context ~= "colima" then
-    vim.notify("Docker context is '" .. context .. "', not colima. Switch with: docker context use colima", vim.log.levels.WARN)
+    vim.notify("Docker context is '" .. context .. "', not colima. Switch with: docker context use colima",
+      vim.log.levels.WARN)
     return
   end
   if vim.fn.executable("colima") == 0 then
@@ -115,13 +116,13 @@ map("n", "<leader>gr", function()
 end, vim.tbl_extend("force", ToggleOpts, { desc = "Reset lazygit working directory" }))
 map("n", "<leader>d1", function()
   restartTerm(1)
-end, vim.tbl_extend("force", ToggleOpts, { desc = "Reset lazygit working directory" }))
+end, vim.tbl_extend("force", ToggleOpts, { desc = "Reset terminal #1" }))
 map("n", "<leader>d2", function()
   restartTerm(2)
-end, vim.tbl_extend("force", ToggleOpts, { desc = "Reset lazygit working directory" }))
+end, vim.tbl_extend("force", ToggleOpts, { desc = "Reset terminal #2" }))
 map("n", "<leader>d3", function()
   restartTerm(3)
-end, vim.tbl_extend("force", ToggleOpts, { desc = "Reset lazygit working directory" }))
+end, vim.tbl_extend("force", ToggleOpts, { desc = "Reset terminal #3" }))
 
 -- ufo fold
 map("n", "zR", function() require("ufo").openAllFolds() end)
