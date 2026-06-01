@@ -72,6 +72,44 @@ end, vim.tbl_extend("force", ToggleOpts, { desc = "Toggle float terminal #3" }))
 map("n", "<leader>gg", function()
   toggleTerm(0, "lazygit");
 end, vim.tbl_extend("force", ToggleOpts, { desc = "Toggle lazygit terminal" }))
+local function withLazydocker(fn)
+  if vim.fn.executable("lazydocker") == 0 then
+    vim.notify("lazydocker not found. Install it with: brew install lazydocker", vim.log.levels.WARN)
+    return
+  end
+  -- If Docker daemon is already up, open immediately
+  if vim.fn.system("docker info > /dev/null 2>&1; echo $?"):match("^0") then
+    fn()
+    return
+  end
+  local context = vim.fn.system("docker context show 2>/dev/null"):gsub("%s+", "")
+  if context ~= "colima" then
+    vim.notify("Docker context is '" .. context .. "', not colima. Switch with: docker context use colima", vim.log.levels.WARN)
+    return
+  end
+  if vim.fn.executable("colima") == 0 then
+    vim.notify("colima not found. Install with: brew install colima docker", vim.log.levels.WARN)
+    return
+  end
+  vim.notify("Starting Docker daemon (colima)...", vim.log.levels.INFO)
+  vim.fn.jobstart("colima start", {
+    on_exit = function(_, code)
+      if code ~= 0 then
+        vim.schedule(function()
+          vim.notify("Failed to start colima. Check: colima status", vim.log.levels.ERROR)
+        end)
+        return
+      end
+      vim.schedule(function()
+        vim.notify("Docker daemon ready (colima)", vim.log.levels.INFO)
+        fn()
+      end)
+    end,
+  })
+end
+map("n", "<leader>dd", function()
+  withLazydocker(function() toggleTerm(10, "lazydocker") end)
+end, vim.tbl_extend("force", ToggleOpts, { desc = "Toggle lazydocker terminal" }))
 map("n", "<leader>gr", function()
   restartTerm(0, "lazygit");
 end, vim.tbl_extend("force", ToggleOpts, { desc = "Reset lazygit working directory" }))
