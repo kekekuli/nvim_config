@@ -310,7 +310,11 @@ return {
       processor = "magick_cli",
     },
     config = function()
-      require('image').setup()
+      require('image').setup({
+        backend = "kitty",
+        kitty_method = "normal",
+        tmux_show_only_in_active_window = true,
+      })
 
       if (vim.fn.executable("magick") == 0) then
         vim.notify("Error: ImageMagick is not installed, which is required by image.nvim", vim.log.levels.ERROR)
