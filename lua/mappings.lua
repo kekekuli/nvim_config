@@ -60,6 +60,17 @@ local function restartTerm(count, initCmd)
 
   toggleTerm(count, initCmd)
 end
+
+-- Inside toggleterm terminals, <C-\> is the open_mapping (it hides the term),
+-- so the built-in <C-\><C-n> escape never lands in terminal-normal mode.
+-- Map a buffer-local hotkey to enter terminal-normal mode for copying/scrolling.
+-- noremap means the RHS is the raw escape sequence, bypassing open_mapping.
+vim.api.nvim_create_autocmd("TermOpen", {
+  pattern = "term://*toggleterm#*",
+  callback = function()
+    vim.keymap.set("t", "<C-x>", [[<C-\><C-n>]], { buffer = 0, desc = "Enter terminal-normal mode" })
+  end,
+})
 map("n", "<leader>1", function()
   toggleTerm(1)
 end, vim.tbl_extend("force", ToggleOpts, { desc = "Toggle float terminal #1" }))
