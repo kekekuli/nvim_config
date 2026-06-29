@@ -340,4 +340,8 @@ return {
       vim.g.matchup_treesitter_stopline = 500
     end
   },
+  {
+    "wakatime/vim-wakatime",
+    event = { "BufReadPost", "BufNewFile" },
+  }
 }
