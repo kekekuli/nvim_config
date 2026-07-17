@@ -150,7 +150,7 @@ return {
         "javascript", "typescript", "html", "css", "tsx", "scss",
         "go", "lua", "c", "cpp", "python", "vue", 'embedded_template',
         "json", "erlang", "graphql", "rust", "elixir", "go", "yaml",
-        "markdown", "markdown_inline", "latex",
+        "markdown", "markdown_inline", "latex", "prisma",
       },
       highlight = {
         enable = true
