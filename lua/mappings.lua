@@ -119,7 +119,7 @@ local function withLazydocker(fn)
     end,
   })
 end
-map("n", "<leader>dd", function()
+map("n", "<leader>od", function()
   withLazydocker(function() toggleTerm(10, "lazydocker") end)
 end, vim.tbl_extend("force", ToggleOpts, { desc = "Toggle lazydocker terminal" }))
 map("n", "<leader>gr", function()
@@ -174,7 +174,7 @@ map("n", "[e", "<cmd>Lspsaga diagnostic_jump_prev<CR>", { desc = "Prev Diagnosti
 map("n", "]e", "<cmd>Lspsaga diagnostic_jump_next<CR>", { desc = "Next Diagnostic" })
 map("n", "ga", "<cmd>Lspsaga incoming_calls<CR>", { desc = "Incoming Calls" })
 map("n", "go", "<cmd>Lspsaga outgoing_calls<CR>", { desc = "Outgoing Calls" })
-map('n', "<leader>o", "<cmd>Lspsaga outline<CR>", { desc = "Outline structure" })
+map('n', "<leader>oo", "<cmd>Lspsaga outline<CR>", { desc = "Outline structure" })
 
 -- dap, debug related
 map("n", "<leader>j", function() require("dap").toggle_breakpoint() end, { desc = "Toggle breakpoint" })
@@ -279,7 +279,7 @@ map('n', 'gm', function() require('harpoon.ui').toggle_quick_menu() end, { desc 
 map('n', '<leader>a', function() require('harpoon.mark').add_file() end, { desc = 'add file to harpoon list' })
 
 -- database ui
-map("n", "<leader>db", "<cmd>DBUIToggle<CR>", { desc = "Toggle Database UI" })
+map("n", "<leader>ob", "<cmd>DBUIToggle<CR>", { desc = "Toggle Database UI" })
 
 local function diffOpenWithInput()
   local user_input = vim.fn.input("Revision to Open: ")
