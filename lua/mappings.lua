@@ -278,6 +278,9 @@ map('n', '<C-3>', function() require('harpoon.ui').nav_file(3) end, { desc = 'Go
 map('n', 'gm', function() require('harpoon.ui').toggle_quick_menu() end, { desc = 'open harpoon ui' })
 map('n', '<leader>a', function() require('harpoon.mark').add_file() end, { desc = 'add file to harpoon list' })
 
+-- database ui
+map("n", "<leader>db", "<cmd>DBUIToggle<CR>", { desc = "Toggle Database UI" })
+
 local function diffOpenWithInput()
   local user_input = vim.fn.input("Revision to Open: ")
   vim.cmd("DiffviewOpen " .. user_input)

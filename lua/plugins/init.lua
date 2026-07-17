@@ -61,10 +61,14 @@ return {
           key_bindings = {
             accept = "<C-l>",
             -- Accept the current completion.
-            clear = "<C-x>",
+            clear = false,
           },
         },
       }
+      -- Manually request a completion when the automatic one doesn't show up
+      vim.keymap.set("i", "<C-x>", function()
+        require("codeium.virtual_text").cycle_or_complete()
+      end, { desc = "Codeium: trigger completion" })
     end,
     event = "InsertEnter",
   },
@@ -343,5 +347,16 @@ return {
   {
     "wakatime/vim-wakatime",
     event = { "BufReadPost", "BufNewFile" },
+  },
+  {
+    "kristijanhusak/vim-dadbod-ui",
+    dependencies = {
+      { "tpope/vim-dadbod",                     lazy = true },
+      { "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true },
+    },
+    cmd = { "DBUI", "DBUIToggle", "DBUIAddConnection", "DBUIFindBuffer" },
+    init = function()
+      vim.g.db_ui_use_nerd_fonts = 1
+    end,
   }
 }

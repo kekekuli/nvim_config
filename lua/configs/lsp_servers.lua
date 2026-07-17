@@ -16,5 +16,6 @@ local servers = {
   "graphql",
   "elp",
   "elixirls",
+  "docker_compose_language_service",
 }
 return servers;
