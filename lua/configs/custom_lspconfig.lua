@@ -106,6 +106,13 @@ function EnableLocalValor()
   vim.lsp.enable({ 'ts_ls', 'vue_ls' }, true);
 end
 
+-- graphql: make it attach inside TS/TSX (for `graphql\`\`` tagged queries),
+-- and root at the folder holding graphql.config.yml so it finds the schema.
+vim.lsp.config('graphql', {
+  filetypes = { 'graphql', 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
+  root_markers = { 'graphql.config.yml', '.graphqlrc.yml', '.graphqlrc', 'graphql.config.js' },
+})
+
 return {
   EnableVue2 = EnableVue2,
   EnableVue3 = EnableVue3,
