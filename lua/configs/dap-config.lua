@@ -2,6 +2,12 @@ vim.fn.sign_define('DapBreakpoint', {
   text = '🛑', -- or '', '●', '🔴', etc.
   texthl = 'DiagnosticError', -- highlight group for color
 })
+vim.fn.sign_define('DapBreakpointRejected', {
+  text = '⚠️',
+  texthl = 'DiagnosticWarn',
+  linehl = '',
+  numhl = 'DiagnosticWarn',
+})
 -- Conditional Breakpoint (e.g. <leader>J)
 vim.fn.sign_define('DapBreakpointCondition', {
   text = '👀',
@@ -27,6 +33,15 @@ vim.fn.sign_define('DapStopped', {
 
 local dap = require("dap")
 local dapui = require("dapui")
+
+-- nvim-dap-ui forwards its stop button to `dap.terminate()` without options,
+-- which only terminates the focused Vitest worker. Stop the complete debug
+-- hierarchy so the parent session cannot block the next launch.
+require("dapui.controls")
+_G._dapui.terminate = function()
+  dap.terminate({ hierarchy = true })
+end
+
 dap.listeners.after.event_initialized["dapui_config"] = function()
   dapui.open({ reset = true })
 end
@@ -49,6 +64,34 @@ dap.adapters["pwa-chrome"] = dap.adapters["pwa-node"]
 
 for _, language in ipairs({ "typescript", "javascript", "svelte", "typescriptreact" }) do
   dap.configurations[language] = {
+    {
+      type = "pwa-node",
+      request = "launch",
+      name = "Debug current Vue unit-jsdom test",
+      cwd = "${workspaceFolder}",
+      program = "${workspaceFolder}/node_modules/vite-plus/bin/vp",
+      args = {
+        "test",
+        "run",
+        "${file}",
+        "--project",
+        "unit-jsdom",
+        "--pool=threads",
+        "--maxWorkers=1",
+        "--no-file-parallelism",
+      },
+      autoAttachChildProcesses = true,
+      sourceMaps = true,
+      sourceMapRenames = true,
+      smartStep = true,
+      resolveSourceMapLocations = {
+        "${workspaceFolder}/**",
+        "!**/node_modules/**",
+      },
+      skipFiles = { "<node_internals>/**", "**/node_modules/**" },
+      console = "integratedTerminal",
+      internalConsoleOptions = "neverOpen",
+    },
     {
       -- use nvim-dap-vscode-js's pwa-node debug adapter
       type = "pwa-node",
