@@ -60,6 +60,37 @@ local function restartTerm(count, initCmd)
 
   toggleTerm(count, initCmd)
 end
+local lazygitCmd = "lazygit --use-config-file="
+  .. vim.fn.shellescape(vim.fn.stdpath("config") .. "/lazygit.yml")
+
+-- Lazygit writes the selected file and line beside Neovim's server socket, then
+-- calls this function with a single RPC. Schedule the handoff so the RPC can
+-- return before its own terminal job is shut down.
+_G.LazygitOpen = function()
+  local requestPath = vim.v.servername .. ".lazygit-open"
+  local request = vim.fn.readfile(requestPath)
+  vim.fn.delete(requestPath)
+
+  vim.schedule(function()
+    local term = Terminal.get(0)
+    if term then
+      term:shutdown()
+    end
+
+    local filename = request[1]
+    if not filename or filename == "" then
+      return
+    end
+
+    pcall(vim.cmd.edit, vim.fn.fnameescape(filename))
+
+    local line = tonumber(request[2])
+    if line and line > 0 then
+      pcall(vim.api.nvim_win_set_cursor, 0, { line, 0 })
+    end
+  end)
+  return 0
+end
 
 -- Inside toggleterm terminals, <C-\> is the open_mapping (it hides the term),
 -- so the built-in <C-\><C-n> escape never lands in terminal-normal mode.
@@ -81,7 +112,7 @@ map("n", "<leader>3", function()
   toggleTerm(3)
 end, vim.tbl_extend("force", ToggleOpts, { desc = "Toggle float terminal #3" }))
 map("n", "<leader>gg", function()
-  toggleTerm(0, "lazygit");
+  toggleTerm(0, lazygitCmd)
 end, vim.tbl_extend("force", ToggleOpts, { desc = "Toggle lazygit terminal" }))
 local function withLazydocker(fn)
   if vim.fn.executable("lazydocker") == 0 then
@@ -123,7 +154,7 @@ map("n", "<leader>od", function()
   withLazydocker(function() toggleTerm(10, "lazydocker") end)
 end, vim.tbl_extend("force", ToggleOpts, { desc = "Toggle lazydocker terminal" }))
 map("n", "<leader>gr", function()
-  restartTerm(0, "lazygit");
+  restartTerm(0, lazygitCmd)
 end, vim.tbl_extend("force", ToggleOpts, { desc = "Reset lazygit working directory" }))
 map("n", "<leader>d1", function()
   restartTerm(1)

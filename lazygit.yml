@@ -1,0 +1,9 @@
+promptToReturnFromSubprocess: false
+
+os:
+  edit: >-
+    [ -z "$NVIM" ] && (nvim -- {{filename}}) || (printf '%s\n%s\n' {{filename}} 0 > "${NVIM}.lazygit-open"; nvim --server "$NVIM" --remote-expr "v:lua.LazygitOpen()" >/dev/null 2>&1; true)
+  editAtLine: >-
+    [ -z "$NVIM" ] && (nvim +{{line}} -- {{filename}}) || (printf '%s\n%s\n' {{filename}} {{line}} > "${NVIM}.lazygit-open"; nvim --server "$NVIM" --remote-expr "v:lua.LazygitOpen()" >/dev/null 2>&1; true)
+  openDirInEditor: >-
+    [ -z "$NVIM" ] && (nvim -- {{dir}}) || (printf '%s\n%s\n' {{dir}} 0 > "${NVIM}.lazygit-open"; nvim --server "$NVIM" --remote-expr "v:lua.LazygitOpen()" >/dev/null 2>&1; true)
