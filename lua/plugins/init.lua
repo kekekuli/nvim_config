@@ -182,7 +182,7 @@ return {
       { "mason-org/mason.nvim", opts = {} },
       "neovim/nvim-lspconfig",
     },
-    event = "BufReadPre",
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
       require("mason-lspconfig").setup({
         ensure_installed = require("configs.lsp_servers"),
