@@ -120,7 +120,9 @@ local function withLazydocker(fn)
     return
   end
   -- If Docker daemon is already up, open immediately
-  if vim.fn.system("docker info > /dev/null 2>&1; echo $?"):match("^0") then
+  local sysname = vim.uv.os_uname().sysname:lower()
+  if sysname:find("linux", 1, true) or
+      vim.fn.system("docker info > /dev/null 2>&1; echo $?"):match("^0") then
     fn()
     return
   end
