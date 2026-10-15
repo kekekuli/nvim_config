@@ -67,15 +67,13 @@ for _, language in ipairs({ "typescript", "javascript", "svelte", "typescriptrea
     {
       type = "pwa-node",
       request = "launch",
-      name = "Debug current Vue unit-jsdom test",
+      name = "Debug current Vue test",
       cwd = "${workspaceFolder}",
       program = "${workspaceFolder}/node_modules/vite-plus/bin/vp",
       args = {
         "test",
         "run",
         "${file}",
-        "--project",
-        "unit-jsdom",
         "--pool=threads",
         "--maxWorkers=1",
         "--no-file-parallelism",

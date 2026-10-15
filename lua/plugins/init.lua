@@ -184,10 +184,10 @@ return {
     },
     event = { "BufReadPre", "BufNewFile" },
     config = function()
+      require("configs.custom_lspconfig");
       require("mason-lspconfig").setup({
         ensure_installed = require("configs.lsp_servers"),
       })
-      require("configs.custom_lspconfig");
     end
   },
   {

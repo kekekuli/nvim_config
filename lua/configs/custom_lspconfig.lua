@@ -113,6 +113,49 @@ vim.lsp.config('graphql', {
   root_markers = { 'graphql.config.yml', '.graphqlrc.yml', '.graphqlrc', 'graphql.config.js' },
 })
 
+-- Pyright does not automatically discover a virtual environment above the
+-- package root in Python monorepos. Walk upward so nested packages can share
+-- the repository-level .venv created by tools such as uv.
+local function find_python(root_dir)
+  local venv = vim.fs.find('.venv', {
+    path = root_dir,
+    upward = true,
+    type = 'directory',
+  })[1]
+
+  if not venv then
+    return nil
+  end
+
+  local python = venv .. '/bin/python'
+  if vim.fn.executable(python) == 1 then
+    return python
+  end
+
+  return nil
+end
+
+vim.lsp.config('pyright', {
+  before_init = function(_, config)
+    local python = find_python(config.root_dir)
+    if python then
+      config.settings = vim.tbl_deep_extend('force', config.settings or {}, {
+        python = { pythonPath = python },
+      })
+    end
+  end,
+  on_init = function(client)
+    local python = find_python(client.root_dir)
+    if python then
+      client.settings = vim.tbl_deep_extend('force', client.settings or {}, {
+        python = { pythonPath = python },
+      })
+      client.config.settings = client.settings
+      client:notify('workspace/didChangeConfiguration', { settings = nil })
+    end
+  end,
+})
+
 return {
   EnableVue2 = EnableVue2,
   EnableVue3 = EnableVue3,
