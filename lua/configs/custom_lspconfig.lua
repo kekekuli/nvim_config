@@ -106,6 +106,14 @@ function EnableLocalValor()
   vim.lsp.enable({ 'ts_ls', 'vue_ls' }, true);
 end
 
+vim.lsp.config("ruby_lsp", {
+  root_markers = {
+    ".tool-versions",
+    ".ruby-lsp",
+    "Gemfile",
+    ".git",
+  },
+})
 -- graphql: make it attach inside TS/TSX (for `graphql\`\`` tagged queries),
 -- and root at the folder holding graphql.config.yml so it finds the schema.
 vim.lsp.config('graphql', {
