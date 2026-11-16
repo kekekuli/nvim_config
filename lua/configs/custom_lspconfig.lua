@@ -106,8 +106,9 @@ function EnableLocalValor()
   vim.lsp.enable({ 'ts_ls', 'vue_ls' }, true);
 end
 
-vim.lsp.config("ruby_lsp", {
-  -- Match by server and project root; the upstream cmd_cwd check can start duplicates.
+vim.lsp.enable("ruby_lsp", false)
+vim.lsp.config("solargraph", {
+  -- Reuse the server for this project when opening another Ruby file.
   reuse_client = function(client, config)
     return not client:is_stopped()
       and client.name == config.name
@@ -115,7 +116,7 @@ vim.lsp.config("ruby_lsp", {
   end,
   root_markers = {
     ".tool-versions",
-    ".ruby-lsp",
+    ".solargraph.yml",
     "Gemfile",
     ".git",
   },

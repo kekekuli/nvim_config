@@ -188,6 +188,7 @@ return {
       require("configs.custom_lspconfig");
       require("mason-lspconfig").setup({
         ensure_installed = require("configs.lsp_servers"),
+        automatic_enable = { exclude = { "ruby_lsp" } },
       })
     end
   },
