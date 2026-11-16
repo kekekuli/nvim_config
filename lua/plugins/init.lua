@@ -334,6 +334,13 @@ return {
     'MeanderingProgrammer/render-markdown.nvim',
     dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
     opts = {
+      html = {
+        tag = {
+          code = { scope_highlight = "@markup.raw" },
+          em = { scope_highlight = "@markup.italic" },
+          strong = { scope_highlight = "@markup.strong" },
+        },
+      },
     },
     event = "BufReadPost"
   },
