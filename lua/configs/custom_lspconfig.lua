@@ -107,6 +107,12 @@ function EnableLocalValor()
 end
 
 vim.lsp.config("ruby_lsp", {
+  -- Match by server and project root; the upstream cmd_cwd check can start duplicates.
+  reuse_client = function(client, config)
+    return not client:is_stopped()
+      and client.name == config.name
+      and client.config.root_dir == config.root_dir
+  end,
   root_markers = {
     ".tool-versions",
     ".ruby-lsp",

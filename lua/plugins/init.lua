@@ -149,12 +149,13 @@ return {
   },
   {
     "nvim-treesitter/nvim-treesitter",
+    lazy = false,
     opts = {
       ensure_installed = {
         "javascript", "typescript", "html", "css", "tsx", "scss",
         "go", "lua", "c", "cpp", "python", "vue", 'embedded_template',
         "json", "erlang", "graphql", "rust", "elixir", "go", "yaml",
-        "markdown", "markdown_inline", "latex", "prisma",
+        "markdown", "markdown_inline", "prisma",
       },
       highlight = {
         enable = true
