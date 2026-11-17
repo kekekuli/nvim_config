@@ -107,7 +107,24 @@ function EnableLocalValor()
 end
 
 vim.lsp.enable("ruby_lsp", false)
+-- Use the project's bundled solargraph when its Gemfile.lock has it (e.g. GitLab,
+-- for pinned version + solargraph-rspec); otherwise fall back to the Mason one.
+local function solargraph_uses_bundle(root_dir)
+  if not root_dir then return false end
+  local lock = io.open(root_dir .. "/Gemfile.lock", "r")
+  if not lock then return false end
+  local content = lock:read("*a")
+  lock:close()
+  return content:find("\n    solargraph %(", 1, false) ~= nil
+end
+
 vim.lsp.config("solargraph", {
+  cmd = function(dispatchers, config)
+    local cmd = solargraph_uses_bundle(config.root_dir)
+        and { "bundle", "exec", "solargraph", "stdio" }
+        or { "solargraph", "stdio" }
+    return vim.lsp.rpc.start(cmd, dispatchers, { cwd = config.root_dir })
+  end,
   -- Reuse the server for this project when opening another Ruby file.
   reuse_client = function(client, config)
     return not client:is_stopped()
