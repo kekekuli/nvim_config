@@ -18,6 +18,6 @@ local servers = {
   "elixirls",
   "docker_compose_language_service",
   "prismals",
-  "solargraph"
+  "ruby_lsp"
 }
 return servers;
