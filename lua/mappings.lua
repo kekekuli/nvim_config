@@ -6,6 +6,48 @@ vim.keymap.del("n", "<c-s>") -- delete default save mapping, I perfer :w
 local map = vim.keymap.set
 map("i", "jk", "<ESC>")
 
+-- GitLab UI toggles
+local previous_statusline
+map("n", "<leader>gs", function()
+  local ok, config = pcall(require, "gitlab.config")
+  if not ok then
+    vim.notify("GitLab is not loaded", vim.log.levels.WARN)
+    return
+  end
+
+  local statusline = config.current().statusline
+  statusline.enabled = not statusline.enabled
+  if statusline.enabled then
+    previous_statusline = vim.o.statusline
+    require("gitlab.statusline").update_status_line()
+  else
+    vim.o.statusline = previous_statusline or vim.o.statusline
+  end
+  vim.cmd.redrawstatus()
+end, { desc = "Toggle GitLab statusline" })
+
+map("n", "<leader>tg", function()
+  local ok, ghost_text = pcall(require, "gitlab.ghost_text")
+  if not ok or not ghost_text.lsp_client then
+    vim.notify("GitLab ghost text is not ready", vim.log.levels.WARN)
+    return
+  end
+
+  ghost_text.toggle_enabled()
+end, { desc = "Toggle GitLab ghost text" })
+
+map("i", "<C-k>", function()
+  local ok, ghost_text = pcall(require, "gitlab.ghost_text")
+  if not ok or not ghost_text.lsp_client then
+    vim.notify("GitLab ghost text is not ready", vim.log.levels.WARN)
+    return
+  end
+
+  ghost_text.increment_edit_counter()
+  ghost_text.clear_ghost_text()
+  ghost_text.update_ghost_text(ghost_text.edit_counter)
+end, { desc = "Request GitLab ghost text" })
+
 -- pantran configs
 local opts = { silent = true, expr = true, noremap = true }
 

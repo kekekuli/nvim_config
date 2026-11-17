@@ -47,31 +47,31 @@ return {
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
   },
-  {
-    "Exafunction/windsurf.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "hrsh7th/nvim-cmp",
-    },
-    config = function()
-      require("codeium").setup {
-        virtual_text = {
-          enabled = true,
-
-          key_bindings = {
-            accept = "<C-l>",
-            -- Accept the current completion.
-            clear = false,
-          },
-        },
-      }
-      -- Manually request a completion when the automatic one doesn't show up
-      vim.keymap.set("i", "<C-x>", function()
-        require("codeium.virtual_text").cycle_or_complete()
-      end, { desc = "Codeium: trigger completion" })
-    end,
-    event = "InsertEnter",
-  },
+  -- {
+  --   "Exafunction/windsurf.nvim",
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --     "hrsh7th/nvim-cmp",
+  --   },
+  --   config = function()
+  --     require("codeium").setup {
+  --       virtual_text = {
+  --         enabled = true,
+  --
+  --         key_bindings = {
+  --           accept = "<C-l>",
+  --           -- Accept the current completion.
+  --           clear = false,
+  --         },
+  --       },
+  --     }
+  --     -- Manually request a completion when the automatic one doesn't show up
+  --     vim.keymap.set("i", "<C-x>", function()
+  --       require("codeium.virtual_text").cycle_or_complete()
+  --     end, { desc = "Codeium: trigger completion" })
+  --   end,
+  --   event = "InsertEnter",
+  -- },
   {
     "RRethy/vim-illuminate",
     event = { "BufReadPost" },
@@ -371,5 +371,66 @@ return {
     init = function()
       vim.g.db_ui_use_nerd_fonts = 1
     end,
+  },
+  {
+    'https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim.git',
+    -- Activate when a file is created/opened
+    event = { 'BufReadPre', 'BufNewFile' },
+    cond = function()
+      -- Only activate if token is present in environment variable.
+      -- Remove this line to use the interactive workflow.
+      return vim.env.GITLAB_TOKEN ~= nil and vim.env.GITLAB_TOKEN ~= ''
+    end,
+    config = function()
+      require('gitlab').setup({
+        statusline = {
+          enabled = false
+        },
+        code_suggestions = {
+          enabled = true,
+
+          -- For the full list of default languages, see the 'auto_filetypes' array in
+          -- https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim/-/blob/main/lua/gitlab/config/defaults.lua
+          ghost_text = {
+            enabled = true, -- ghost text is an experimental feature
+            accept_suggestion = "<C-l>",
+            stream = true,
+          },
+        }
+      })
+
+      -- This plugin is not compatible for neovim 0.12+, so make a patch mannully, may remove this in furture.
+      local ghost_text = require("gitlab.ghost_text")
+      local ghost_text_vim = setmetatable({}, { __index = vim })
+      ghost_text_vim.lsp = setmetatable({}, { __index = vim.lsp })
+      ghost_text_vim.lsp.util = setmetatable({}, { __index = vim.lsp.util })
+      ghost_text_vim.lsp.util.make_position_params = function(window, encoding)
+        local client = ghost_text.lsp_client
+            and vim.lsp.get_client_by_id(ghost_text.lsp_client.client_id)
+        encoding = encoding or (client and client.offset_encoding)
+            or require("gitlab.config").current().code_suggestions.offset_encoding
+        return vim.lsp.util.make_position_params(window, encoding)
+      end
+      ghost_text.vim = ghost_text_vim
+
+      local function start_gitlab()
+        if vim.bo.buftype ~= "" or vim.api.nvim_buf_get_name(0) == "" then
+          return
+        end
+
+        if #vim.lsp.get_clients({ bufnr = 0, name = "gitlab_code_suggestions" }) == 0 then
+          vim.cmd.GitLabCodeSuggestionsStart()
+        end
+      end
+
+      vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+        group = vim.api.nvim_create_augroup("GitLabAutoStart", { clear = true }),
+        callback = start_gitlab,
+        desc = "Start GitLab code suggestions when loading or creating a file",
+      })
+      vim.schedule(start_gitlab)
+    end
+
+    -- install glab, duo cli tool to start interactive chat particaulaly for gitlab-accsiocated projects.
   }
 }
