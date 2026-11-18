@@ -116,11 +116,19 @@ vim.lsp.config("ruby_lsp", {
       and client.name == config.name
       and client.config.root_dir == config.root_dir
   end,
-  root_markers = {
-    ".tool-versions",
-    "Gemfile",
-    ".git",
-  },
+  -- Files without a project root (e.g. gem sources opened via `gd`) attach to the
+  -- already running ruby_lsp client instead of starting a second, single-file one.
+  root_dir = function(bufnr, on_dir)
+    local root = vim.fs.root(bufnr, { ".tool-versions", "Gemfile", ".git" })
+    if root then
+      return on_dir(root)
+    end
+    for _, client in ipairs(vim.lsp.get_clients({ name = "ruby_lsp" })) do
+      if client.config.root_dir then
+        return on_dir(client.config.root_dir)
+      end
+    end
+  end,
 })
 vim.lsp.enable("ruby_lsp", true)
 -- graphql: make it attach inside TS/TSX (for `graphql\`\`` tagged queries),
