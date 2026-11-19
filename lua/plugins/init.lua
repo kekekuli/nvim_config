@@ -401,12 +401,33 @@ return {
 
       -- This plugin is not compatible for neovim 0.12+, so make a patch mannully, may remove this in furture.
       local ghost_text = require("gitlab.ghost_text")
+      local function get_ghost_text_client()
+        return ghost_text.lsp_client
+            and vim.lsp.get_client_by_id(ghost_text.lsp_client.client_id)
+      end
+
+      local update_ghost_text = ghost_text.update_ghost_text
+      ghost_text.update_ghost_text = function(...)
+        if not get_ghost_text_client() then
+          return
+        end
+        return update_ghost_text(...)
+      end
+
+      local cancel_streaming = ghost_text.cancel_streaming
+      ghost_text.cancel_streaming = function(...)
+        if not get_ghost_text_client() then
+          ghost_text.finish_streaming()
+          return
+        end
+        return cancel_streaming(...)
+      end
+
       local ghost_text_vim = setmetatable({}, { __index = vim })
       ghost_text_vim.lsp = setmetatable({}, { __index = vim.lsp })
       ghost_text_vim.lsp.util = setmetatable({}, { __index = vim.lsp.util })
       ghost_text_vim.lsp.util.make_position_params = function(window, encoding)
-        local client = ghost_text.lsp_client
-            and vim.lsp.get_client_by_id(ghost_text.lsp_client.client_id)
+        local client = get_ghost_text_client()
         encoding = encoding or (client and client.offset_encoding)
             or require("gitlab.config").current().code_suggestions.offset_encoding
         return vim.lsp.util.make_position_params(window, encoding)
