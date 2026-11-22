@@ -349,6 +349,23 @@ return {
     "HiPhish/rainbow-delimiters.nvim",
     dependencies = "nvim-treesitter/nvim-treesitter",
     event = "BufReadPost",
+    init = function()
+      local config = vim.g.rainbow_delimiters or {}
+      config.condition = function(bufnr)
+        if vim.bo[bufnr].buftype ~= "" then
+          return false
+        end
+
+        local lang = vim.treesitter.language.get_lang(vim.bo[bufnr].filetype)
+        if not lang then
+          return false
+        end
+
+        local ok, parser = pcall(vim.treesitter.get_parser, bufnr, lang)
+        return ok and parser ~= nil
+      end
+      vim.g.rainbow_delimiters = config
+    end,
   },
   {
     "andymass/vim-matchup",
